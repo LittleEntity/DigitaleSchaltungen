@@ -1,0 +1,68 @@
+\chapter{FlipFlops}
+FlipFlops sind taktflankengesteuerte Speicherelemente. Zu einem bestimmten Zeitpunkt kann der Speicherwert des FlipFlops neu gesetzt oder der bisherige Wert erhalten werden. Der betreffende Zeitpunkt ist gekennzeichnet durch die positive oder negative Taktflanke (auch beide Taktflanken sind möglich). Es gibt noch weitere Speicherelemente. Darunter asynchrone Speicherelemente, die ohne Taktung arbeiten und Speicherelemente, welche während eines Taktzustandes beschaltet werden können. In diesem Dokument wird die Funktionsweise des synchronen JK-FlipFlops und des synchronen D-FlipFlops besprochen. 
+
+\section{Synchrones D-FlipFlop}
+Abbildung \ref{dffSym} zeigt das Schaltsymbol und das Schaltverhalten des D-FlipFlops mit positiver Taktflanke. FlipFlops, welche bei negativer oder beiden Taktflanken angesteuert werden können, können analog betrachtet werden. Das Symbol $\uparrow$ symbolisiert hier die positive Taktflanke. $\downarrow$ symbolisiert entsprechend die negative Taktflanke.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{dffSchaltungssymbol.pdf}
+	
+	\vspace{6pt}
+	
+	\begin{tabular}{ccc}
+		$clk$            & $d$ & $q^{t+1}$ \\ \hline
+		0/1/$\downarrow$ & -   & $q^t$     \\
+		$\uparrow$       & 0   & 0         \\
+		$\uparrow$       & 1   & 1         \\		
+	\end{tabular}
+	\caption{Schaltungsdiagramm und Schaltdiagramm eines D-FlipFlops mit positiver Taktflanke}
+	\label{dffSym}
+\end{figure}
+
+Das D-FlipFlop nimmt einen Wert am Eingang $d$ entgegen und speichert diesen Wert bis er neu gesetzt wird. Der gespeicherte Wert kann am Ausgang $q$ abgefragt werden. Zusätzlich gibt es den Ausgang $\overline{q}$, welcher die Negation des gespeicherten Wertes ausgibt.
+
+Allgemeingültige Ansteuergleichungen für D-FlipFlops sind in folgender Tabelle erfasst.
+\begin{center}
+\begin{tabular}{lcl|c}
+$z^t$ & $\mapsto$ & $z^t+1$ & D\\ \hline
+0 & $\mapsto$ & 0 & 0\\
+0 & $\mapsto$ & 1 & 1\\
+1 & $\mapsto$ & 0 & 0\\
+1 & $\mapsto$ & 1 & 1\\
+\end{tabular}
+\end{center} 
+
+\section{Synchrones JK-FlipFlop}
+Das JK-FlipFlop bietet als Baustein eine weitaus größere Funktionalität als das D-FlipFlop. Abbildung \ref{jkffSym} zeigt das Schaltsymbol und die Wahrheitstabelle zum JK-FlipFlop. J steht für "`jump"' und K für "`kill"'.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{jkffSchaltungssymbol.pdf}
+	
+	\vspace{6pt}
+	
+	\begin{tabular}{cccc}
+		$clk$            & $j$ & $k$ & $q^{t+1}$  \\ \hline
+		0/1/$\downarrow$ & -   & -   & $q^t$      \\
+		$\uparrow$       & 0   & 0   & $q^t$      \\
+		$\uparrow$       & 0   & 1   & 0          \\		
+		$\uparrow$       & 1   & 0   & 1          \\		
+		$\uparrow$       & 1   & 1   & $\overline{q^t}$ \\		
+	\end{tabular}
+	\caption{Schaltungsdiagramm und Schaltdiagramm eines JK-FlipFlops mit positiver Taktflanke}
+	\label{jkffSym}
+\end{figure}
+
+Das JK-FlipFlop reagiert, wie alle FlipFlops, auf eine Ansteuerung zum Zeitpunkt einer Taktflanke. An der Wahrheitstabelle wird abgelesen welche Funktionalität das JK-FlipFlop bietet. Wird an $jk$ 00 angelegt bleibt der bestehende Zustand erhalten. Wird 01 angelegt wird der aktuelle Zustand auf 0 gesetzt. Wird 10 angelegt wird der aktuell gespeicherte Wert auf 1 gesetzt. Bei der Belegung 11 ist das Resultat für den folgenden Zustand abhängig vom vorhergehenden Zustand. Es wird der negierte Zustand vom vorherigen Zustand gespeichert. War der gespeicherte Wert 1 wird 0 gespeichert. War der gespeicherte Wert 0 wird 1 gespeichert.
+
+Allgemeingültige Ansteuergleichungen für JK-FlipFlops sind in folgender Tabelle erfasst.
+\begin{center}
+\begin{tabular}{lcl|ccl}
+$z^t$ & $\mapsto$ & $z^t+1$ & J & K & Eselsbrücke\\ \hline
+0 & $\mapsto$ & 0 & 0 & * & no jump\\
+0 & $\mapsto$ & 1 & 1 & * & jump\\
+1 & $\mapsto$ & 0 & * & 1 & kill\\
+1 & $\mapsto$ & 1 & * & 0 & no kill\\
+\end{tabular}
+\end{center} 
+

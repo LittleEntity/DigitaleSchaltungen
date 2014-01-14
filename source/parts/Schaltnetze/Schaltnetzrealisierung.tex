@@ -1,0 +1,270 @@
+ %\input{../praeambel} \begin{document}
+
+\chapter{Schaltnetzrealisierung}
+Schaltnetze können systematisch über ein Binary Decision Diagram oder einer Schaltfunktion umgesetzt werden. 
+%TODO SN-Realisierung mit Schaltdiagrammen ausführen 
+{\sc nand} bzw. {\sc nor} Schaltkreise sind dabei physikalisch günstiger, da weniger Transistoren, Leistung und geringere Schaltzeiten benötigt werden. Näheres zu {\sc nand}/{\sc nor} Funktionen ist im Dokument Digitaltechnik Aufbereitung zu finden. 
+
+\section{{\sc {\sc nand}} und {\sc nor} Formen}
+Jede Schaltfunktion kann nach den Gesetzen von De Morgan mit {\sc nand} oder {\sc nor} Bausteinen umgesetzt werden. Dabei wird der Umstand genutzt, dass die doppelte Negation die ursprünglche Aussage erhält. Im Folgenden ein Beispiel:
+\begin{align*}
+y &= a \cdot b + \overline{c} \cdot d \\
+  &= \overline{\overline{a \cdot b + \overline{c} \cdot d}} 
+  	\textnormal{ \# doppelte Negation erhält die Aussage} \\
+  &= \overline{\overline{a \cdot b} \cdot \overline{\overline{c} \cdot d}}
+  \textnormal{ \# Gesetz von De Morgan führt zu {\sc nand}} \\
+  &= \overline{\overline{\overline{\overline{a \cdot b} \cdot \overline{\overline{c} \cdot d}}}} 
+  	\textnormal{ \# Doppelte Negation für {\sc nor} Realisierung} \\ 
+  &= \overline{\overline{\overline{a \cdot b} + \overline{\overline{c} \cdot d}}} \\
+  &= \overline{\overline{\overline{a \cdot b} + \overline{\overline{c} \cdot d}}} \\
+  &= \overline{\overline{(\overline{a} + \overline{b}) + (c + \overline{d})}} \textnormal{ \# {\sc nor} Realisierung}\\
+  &= \overline{\overline{\overline{\overline{(\overline{a} + \overline{b})}} 
+  	+ \overline{\overline{(c + \overline{d})}}}} \\
+\end{align*}
+
+Ausgehend von einer Disjunktiven Form\footnote{Näheres zu Disjunktiven Formen kann im Dokument Digitaltechnik Aufarbeitung nachgeschlagen werden.} kann also über die Doppelte Negation zu einer {\sc nand} Funktion umgebaut werden. Es gilt mit den Mintermenen $m_i$:
+
+\begin{align*}
+	y &= m_1 + m_2 + \ldots + m_n = \sum_{i=1}^n m_i \\
+	  &= \overline{\overline{m_1 + m_2 + \ldots + m_n}} = \overline{\overline{\sum_{i=1}^n m_i}} \\
+	  &= \overline{\overline{m_1} \cdot \overline{m_2} \cdot \overline{(\ldots)} \cdot \overline{m_n}} 
+	   = \overline{\prod_{i=1}^n \overline{m_i}} \\
+\end{align*}
+Als allgemeine Methode um von einer Disjunktiven Form zu einer {\sc nand} Form umzuformen kann angegeben werden:
+\begin{enumerate}
+  \item erhalte Aussage mittels doppelter Negation
+  \item wende ein mal das Gesetz von De Morgan an
+  \item Ergebnis ist eine zweistufige {\sc nand} Form der Funktion
+\end{enumerate}
+Ein Beispiel zur Überführung der Form einer Funktion in Disjunktiver Form zu einer {\sc nand} Form: 
+\begin{align*}
+	y &= ab + \overline{c}d + e \\
+	  &= \overline{\overline{ab + \overline{c}d + e}} \\
+	  &= \overline{\overline{a}\overline{b} \cdot c\overline{d} \cdot \overline{e}} \\
+\end{align*}
+%TODO schaltdiagramm ergänzen
+
+Um die Umformung einer Disjunktiven Form auf eine {\sc nor} Form zu realisieren können folgende Regeln genutzt werden:
+\begin{align*}
+	y = \sum_{i=1}^n m_i = \sum_{i=1}^n \overline{\overline{m_i}} 
+		= \overline{\overline{\sum_{i=1}^n \overline{\overline{m_i}}}} \\
+\end{align*}
+Als allgemeine Methode um von einer Disjunktiven Form zu einer {\sc nand} Form umzuformen kann angegeben werden:
+\begin{enumerate}
+  \item erhalte Aussage mittels doppelter Negation der gesamten Funktion
+  \item erhalte die Aussage jedes Minterms mittels doppelter Negation des jeweiligen Terms
+  \item wende ein mal das Gesetz von De Morgan auf jeden doppelt negierten Minterm an
+  \item Ergebnis ist eine dreistufige {\sc nor} Form der Funktion
+\end{enumerate}
+Ein Beispiel zur Überführung einer Disjunktiver Form zu einer {\sc nor} Form: 
+\begin{align*}
+	y &= ab + \overline{c}d + e \\
+	  &= \overline{\overline{\overline{\overline{ab}} + \overline{\overline{\overline{c}d}} 
+	  	+ \overline{\overline{e}}}} \\	  
+	  &= \overline{\overline{\overline{(\overline{a} + \overline{b})} + \overline{(c + \overline{d})} + e}} \\
+\end{align*}
+%TODO schaltdiagramm ergänzen
+
+Ausgehend von einer Konjunktiven Form mit den Maxtermen $M_i$ kann eine \textsc{nor} Form mit folgenden Regeln erstellt werden:
+\begin{align*}
+	y = \prod_{i=1}^n M_i = \overline{\overline{\prod_{i=1}^n M_i}} = \overline{\sum_{i=1}^n \overline{M_i}} \\
+\end{align*}
+Als allgemeine Methode um von einer Konjunktiven Form zu einer {\sc nor} Form umzuformen kann angegeben werden:
+\begin{enumerate}
+  \item erhalte Aussage mittels doppelter Negation
+  \item wende ein mal das Gesetz von De Morgan an
+  \item Ergebnis ist eine zweistufige {\sc nor} Form der Funktion
+\end{enumerate}
+Ein Beispiel zur Überführung der Form einer Funktion in Konjunktiver Form zu einer {\sc nor} Form: 
+\begin{align*}
+	y &= (a + b) \cdot (\overline{c} + d) \cdot e \\
+	  &= \overline{\overline{(a + b) \cdot (\overline{c} + d) \cdot e}} \\
+	  &= \overline{\overline{(a + b)} + \overline{(\overline{c} + d)} + \overline{e}} \\
+\end{align*}
+%TODO schaltdiagramm ergänzen
+
+Ausgehend von einer Konjunktiven Form mit den Maxtermen $M_i$ kann eine \textsc{nand} Form mit folgenden Regeln erstellt werden:
+\begin{align*}
+	y = \prod_{i=1}^n M_i = \overline{\overline{\prod_{i=1}^n M_i}} 
+		= \overline{\overline{\sum_{i=1}^n \overline{\overline{M_i}}}} \\
+\end{align*}
+Als allgemeine Methode um von einer Konjunktiven Form zu einer {\sc nand} Form umzuformen kann angegeben werden:
+\begin{enumerate}
+  \item erhalte Aussage mittels doppelter Negation
+  \item erhalte die Aussage jedes Maxterms mittels doppelter Negation des jeweiligen Terms
+  \item wende ein mal das Gesetz von De Morgan auf jeden doppelt negierten Maxterm an
+  \item Ergebnis ist eine dreistufige {\sc nand} Form der Funktion
+\end{enumerate}
+Ein Beispiel zur Überführung der Form einer Funktion in Konjunktiver Form zu einer {\sc nand} Form: 
+\begin{align*}
+	y &= (a + b) \cdot (\overline{c} + d) \cdot e \\
+	  &= \overline{\overline{\overline{\overline{(a + b)}} \cdot \overline{\overline{(\overline{c} + d)}} 
+	  	\cdot \overline{\overline{e}}}} \\
+	  &= \overline{\overline{\overline{(\overline{a} \cdot \overline{b})} 
+	  	\cdot \overline{(c \cdot \overline{d})} \cdot e}} \\	  
+\end{align*}
+%TODO schaltdiagramm ergänzen
+
+\section{Positive und Negative Logik}
+Um die binären Werte $\{0, 1\}$ technisch abbilden zu können werden in der Halbleitertechnik die Signalpegel Low (L) und High (H) verwendet. Die Zuordnung von Signalpegel auf binären Wert ist dabei frei wählbar. Allerdings wirkt die Zuordnung sich auf die Logik aus. Tabelle \ref{posNegLogik} zeigt die Standard-Zuordnung der Signalpegel für die logische Grundfunktion. Je nachdem ob L $\mapsto$ 0 oder L $\mapsto$ 1 zugeordnet wird ergibt sich für die Standard-Zuordnung entweder das logische {\sc and} oder {\sc or}.
+\begin{table}[h]
+\centering
+\begin{tabular}{*{2}{cc|c||}cc|c}
+\multicolumn{3}{c||}{Signalpegel} & \multicolumn{6}{c}{Schaltfunktion}\\
+\multicolumn{3}{c||}{Standard Zuordnung} & \multicolumn{3}{c||}{positive Logik: {\sc and}} & \multicolumn{3}{c}{negative Logik: {\sc or}}\\
+\multicolumn{3}{c||}{\{L, H\} $\mapsto$ \{L, H\}} & \multicolumn{3}{c||}{L $\mapsto$ 0} & \multicolumn{3}{c}{L $\mapsto$ 1}\\ \hline
+b & a & y & b & a & y & b & a & y \\ \hline
+L & L & L & 0 & 0 & 0 & 1 & 1 & 1 \\
+L & H & L & 0 & 1 & 0 & 1 & 0 & 1 \\
+H & L & L & 1 & 0 & 0 & 0 & 1 & 1 \\
+H & H & H & 1 & 1 & 1 & 0 & 0 & 0 \\
+\end{tabular}
+\caption{Positive und Negative Logik}
+\label{posNegLogik}
+\end{table}
+
+Aufgrund dieser Zusammenhänge wird die positive Logik auch {\sl wired {\sc and}} und die negative Logik auch {\sl wired {\sc or}} genannt.  
+  
+\section{Multiplexer}  
+Mit Multiplexern kann von mehreren Eingängen einer geziehlt per Addressierung ausgewählt werden. Diese Funktion kommt beispielsweise in Bus-Systemen zum Einsatz. Je nachdem wieviele Werte addressiert werden sollen, müssen entsprechend viele Variablen als Adressvariablen gewählt werden. Jede Adressvariable steht dabei für eine Stelle einer Adresse. 
+
+Ein 2 zu 1 Multiplexer hat demnach zwei Eingänge, die es zu addressieren gilt. Demnach muss eine zusätzliche Eingangsvariable als Addressvariable zur Darstellung der Addressen 0 und 1 ergänzt werden. Abbildung \ref{2zu1MuxReal} zeigt die Realisierung eines 2 zu 1 Multiplexers. Hat $a$ den Wert 0 so wird der Wert $x_0$ an y übertragen. Hat $a$ den Wert 1 wird der Wert von $x_1$ ausgewählt und an $y$ übertragen.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{2zu1MuxRealisierung.pdf}
+	\caption{Schaltbild eines 2 zu 1 Multiplexers}
+	\label{2zu1MuxReal}
+\end{figure}
+
+Um die Beschreibung von Multiplexern zu vereinfachen kann die Notation aus Abbildung \ref{MulNot} verwendet werden.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{MultiplexerNotation.pdf}
+	\caption{Notation eines n zu 1 Multiplexers}
+	\label{MulNot}
+\end{figure}
+
+Nach demselben Schema lassen sich $n$ zu 1 Multiplexer aufbauen. Wobei $n$ die Anzahl addressierbarer Elemente ist. Praktisch angewandt kann dies Beispielsweise für eine Register zu Bus Verbindung genutzt werden. Wenn der Wert eines Registers einem Bus übergeben werden soll geschieht folgendes: In die Adressvariablen wird die Adresse des Registers geschrieben. Damit wird im Multiplexer das entsprechende Register ausgewählt. Die Ausgangsvariable erhält somit den Wert des Registers. Abbildung \ref{4zu1MuxReal} zeigt das Schaltbild eines 4 zu 1 Multiplexers.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{4zu1MuxRealisierung.pdf}
+	\caption{Schaltbild eines 4 zu 1 Multiplexers}
+	\label{4zu1MuxReal}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=1]{4zu1Mux.pdf}
+	\caption{Kurznotation des 4 zu 1 Multiplexers}
+\end{figure}
+
+Aufgrund dieser zuordnenden Eigenschaft können Multiplexer auch zur Realisierung von Schaltfunktionen verwendet werden. Zu diesem Zweck werden den Addressen die Funktionswerte der zu realisierenden Funktion zugeordnet. Die Addressen entsprechen somit den Belegungen der Eingangsvariablen der Funktion in Disjunktiver Normalform. Da die Disjunktive Normalform aus der Schaltbelegungstabelle abgelesen werden kann, können die Funktionswerte aus der Schaltbelegungstabelle direkt auf den Multiplexer übertragen werden. Abbildung \ref{FunMuxBsp} zeigt ein Beispiel einer Funktion und deren Darstellung in einer Schaltbeleungstabelle, als Disjunktive Normalform und realisiert als Multiplexer.
+\begin{table}[htp]
+	\centering
+	\begin{tabular}{*{9}{l}}    
+	$i$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+	$c$ & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\
+	$b$ & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 1 \\
+	$a$ & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\ \hline
+	$y$ & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 \\
+	\end{tabular}
+\end{table}
+$$ y = \overline{a}\overline{b}\overline{c} + \overline{a}b\overline{c} + \overline{a}\overline{b}c + abc $$
+\begin{figure}[htp]	
+	\centering
+	\includegraphics{8zu1MuxFunBsp.pdf}
+	\caption{Beispiel einer Funktion Realisiert als Multiplexer}
+	\label{FunMuxBsp}
+\end{figure}
+
+Bei der Realiserung von Funktionen als Multiplexer können die Addressvariablen zur Minimierung des Multiplexers dienen. Dazu werden die Werte des Multiplexers abhängig von den Eingangsvariablen gesetzt. Mit diesem Verfahren kann die Funktion aus \ref{FunMuxBsp} mit dem Multiplexer aus Abbildung \ref{minMuxFunBsp} realisiert werden.
+
+\begin{figure}[htp]
+	\centering
+	\begin{tabular}{*{9}{l}}    
+	$i$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+	$c$ & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\
+	$b$ & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 1 \\
+	$a$ & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\ \hline
+	$y$ & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 \\
+	\end{tabular}
+	$\mapsto$
+	\begin{tabular}{*{5}{l}}    
+	$b$ & 0 & 0 & 1              & 1 \\
+	$a$ & 0 & 1 & 0              & 1 \\ \hline
+	$y$ & 1 & 0 & $\overline{c}$ & $c$ \\
+	\end{tabular}
+	
+	\vspace{1cm}
+	
+	\includegraphics{4zu1minMuxFunBsp.pdf}
+	\caption{Minimierter Multiplexer}
+	\label{minMuxFunBsp}
+\end{figure} 
+
+%TODO Abschnitt "Demultiplexer" aus DgS-SN-2f ergänzen 
+
+\section{{\sc Rom, Prom}-Realisierung einer Schaltfunktion}
+{\sc Rom} steht für Read Only Memory. {\sc Prom} steht entsprechend für Programmable Read Only Memory. Es handelt sich um unversell einsetzbare addressierende Einheiten zur Realisierung von Schaltnetzen. Jeder Addresse wird hierbei ein Speicherwort als Festwert bzw. Konstante zugeordnet. So können allen Variablenbelegungen einer Funktion der entsprechende Wert als Speicherwort im {\sc rom} zugeordnet werden. Dies ist Verleichbar mit dem nicht minimierten Verfahren zur Realisierung einer Funktion mit einem Multiplexer.
+
+Beispiel: Es sei folgende Funktion gegeben:
+$$f(x_0, x_1, x_2, x_3) = y = \prod \{M_0, M_2, M_3, M_4, M_5, M_8, M_{12}, M_{13}\}$$ %führt zu Anzeigefehler?
+Die Funktion soll mit einem {\sc prom} realisiert werden. Es werden also vier Addresseingänge benötigt, womit $2^4$ Werte addressiert werden können. An den jeweiligen Addressen, die den Indizes der Maxterme entsprechen, wird der Wert $0$ einprogrammiert. An allen übrigen Addressen wird der Wert $1$ einprogrammiert, da diese Addressen den Mintermen der Funktion entsprechen. Abbildung \ref{PROMbeispiel} zeigt das Schaltdiagramm für den {\sc prom}-Baustein.
+\begin{figure}[htp]
+%TODO SBT einfügen
+	\centering
+	\includegraphics{PROMbsp.pdf}
+	\caption{{\sc Prom} realisiert die angegebene Schaltfunktion}
+	\label{PROMbeispiel}
+\end{figure}
+
+\section{{\sc Pla}-Realisierungen}
+{\sc Pla} steht für Programmable Logic Array. In einem PLA liegen alle Eingangsvariablen sowohl als solche als auch negiert vor. Die Variablenbelegungen können im Konjunktionsfeld des {\sc pla}s beliebig konjunktiv verknüpft werden. So entstehen rein konjunktiv verknüpfte Terme, welche als Minterme einer Funktion dienen können. Im Disjunktionsfeld des {\sc pla}s können die Minterme aus dem Konjunktionsfeld disjunktiv verknüpft werden. Die Verknüpfung der Variablen und Terme kann im Baustein programmiert werden. So kann jede Schaltfunktion in disjunktiver Form realisiert werden.
+Da jede Variable mit jeder anderen Variablen einen Minterm bilden kann, werden genauso viele Konjunktionsbausteine benötigt, wie Eingangsvariablen vorhanden sind. Es können beliebig viele Disjunktionsbausteine im Disjunktionsfeld gewählt werden um beliebig viele Funktionen mit den im Konjunktionsfeld erstellten Mintermen zu realisieren. Abbildung \ref{PLAschem} zeigt das Schema eines {\sc pla}-Bausteins.  
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{PLAschema.pdf}
+	\caption{Schema eines {\sc pla}-Bausteins}
+	\label{PLAschem}
+\end{figure}
+
+Beispiel: Die Funktionen $f, g$ und $h$ seien durch die Schaltbelegungstabelle \ref{PlaBspSBT} definiert. Die Funktion $f$ soll mittels eines {\sc pla}s realisiert werden.
+\begin{table}[htp]
+\centering
+\begin{tabular}{*{9}{c}}
+$i$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+$c$ & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\
+$b$ & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 1 \\
+$a$ & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\ \hline
+$f$ & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 \\ \hline
+$g$ & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 0 \\ \hline
+$h$ & 0 & 0 & 0 & 0 & 1 & 0 & 1 & 0 \\
+\end{tabular}
+\caption{Schaltbelegungstabelle der Funktionen $f, g$ und $h$ für das Beispiel zur Realisierung einer Funktion mittels eines {\sc pla}-Bausteins.}
+\label{PlaBspSBT}
+\end{table}
+
+
+Die Funktionen lassen sich wie folgt minimieren:
+\begin{align*}
+ f &= \overline{a}c + \overline{b}\overline{c} \\
+ g &= a\overline{b} + \overline{a}b\overline{c} \\
+ h &= \overline{a}c \\
+\end{align*}
+
+Damit realisiert der {\sc pla}-Baustein aus Abbildung \ref{plaBeispiel} die Funktionen $f, g$ und $h$.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{PLAbsp.pdf}
+	\caption{Beispiel eines programmierten {\sc pla}-Bausteins für die Funktionen $f, g$ und $h$ aus der Schaltbelegungstabelle \ref{PlaBspSBT}}
+	\label{plaBeispiel}
+\end{figure}
+
+  
+%TODO Abschnitt "Kosten" aus DgS-SN-2f ergänzen 
+
+
+
+
+% \end{document}

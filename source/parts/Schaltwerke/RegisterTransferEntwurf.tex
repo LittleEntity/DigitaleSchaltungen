@@ -1,0 +1,147 @@
+\chapter{Register Transfer Entwurf}
+Für die Komplexität großer Systeme eignet sich der Automatenentwurf eines Schaltwerks aufgrund der wachsenden Komplexität nicht mehr, weil die Komplexität trotz Grafischer Darstellung unüberschaubar wird. Eine weitere Abstraktionsebene wird daher mit dem Register Transfer Entwurf\footnote{Registe Transfer Entwurf Krzl. RT-Entwurf} eingeführt.
+
+Beim RT-Entwurf werden wiederum Schaltdiagramme verwendet, dieses mal jedoch werden nicht einzelne Bits sondern ganze Register und funktionale Einheiten als solche im Diagramm verwendet. Weiterhin wird strikt zwischen Steuerwerk und Operationswerk unterschieden. Das \emph{Steuerwerk} enthält die Steuerung der Datenströme und die Ablaufsteuerung via Steuer- und Statusvariablen. Das \emph{Operationswerk} übernimmt die Leitung, Speicherung und logische oder arithmetische Verknüpfung der Daten.
+
+Als erstes Beispiel wird der Register Transfer Entwurf eines Akkumulators besprochen. Ein Akkumulator besteht aus zwei Registern, einem Addierer und der Steuerlogik um die Summe über die beiden Register bilden und speichern zu können. In diesem Beispiel seien die zwei Register $AC$ und $E$ gegeben. Weiterhin wird ein Addierer mit Zeichen $\Sigma$ verwendet. Tabelle \ref{rteAkku} zeigt die RT-Beschreibung für den Akkumulator. Abbildung \ref{OpSchAkku} zeigt das Operationswerk des Akkumulators.
+
+\begin{table}[htp]
+\centering
+\begin{tabular}{cll}
+Nr. & RT-Operation       & Kommentar \\ \hline
+1   & $E \leftarrow \#5$ & lade $E$    \\
+2   & $AC \leftarrow E$  & kopiere $E$ nach $AC$ \\
+3   & $E \leftarrow \#3$ & lade $E$ \\
+4 & $AC \leftarrow AC + E$ & summiere $AC$ + $E$ und speichere Ergebnis in $AC$ \\
+\end{tabular}
+\caption{RT-Beschreibung des Akkumulators}
+\label{rteAkku}
+\end{table}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{OperationswerkSchaltungAkkumulator.pdf}
+	\caption{Schaltbild des Operationswerks des Akkumulators}
+	\label{OpSchAkku}
+\end{figure}
+
+Das Akkumulator-Steuerwerk kann aus der RT-Beschreibungstabelle generiert werden. Zunächst wird dabei jede Anweisung einer Zeile als Zustand mit Dualzahlenbeschreibung codiert. Anschließend wird ein Dualzähler verwendet um die entsprechenden Zustände zu realiseren. Die Ausgabefunktionen werden entsprechend der Zustandscodierung abgeleitet. Tabelle \ref{AkkuSteuerwerkSynthese} zeigt die Synthesetabelle für den Akkumulator. Die Ausgabefunktionen sind somit:
+\begin{align*}
+	s &= z_1 \\
+	WE &= \overline{z_0} \\
+	WAC &= z_0 \\
+\end{align*}
+
+\begin{table}[htp]
+\centering
+\begin{tabular}{cl}
+Nr. & RT-Operation\\\hline
+1 & $E \leftarrow \#5$\\
+2 & $AC \leftarrow E$\\
+3 & $E \leftarrow \#3$\\
+4 & $AC \leftarrow AC + E$\\
+\end{tabular}
+\hspace{0.7cm}
+\begin{tabular}{c|cc|ccc}
+Z & $z_1$ & $Z_2$ & $s_0$ & $W\_E$ & $W\_AC$ \\ \hline
+1 & 0     & 0     & *     & 1      & 0       \\
+2 & 0     & 1     & 0     & 0      & 1       \\
+3 & 1     & 0     & *     & 1      & 0       \\
+4 & 1     & 1     & 1     & 0      & 1       \\
+\end{tabular}
+\caption{RT-Beschreibung und Steuerwerk-Synthesetabelle des Akkumulators}
+\label{AkkuSteuerwerkSynthese}
+\end{table}
+
+In den folgenden Abschnitten wird mittels des Register Transfer Entwurfs ein 4-Bit Blockmultiplizierer Schritt für Schritt entwickelt. Ein Blockmultiplizierer teilt die Faktoren anhand ihrer Stellen in Blöcke auf und Multipliziert die Blöcke. Anschließend werden die Blöcke entsprechend um die jeweiligen Stellen verschoben und aufaddiert um das korrekte ergebnis der Multiplikation der ursprünglichen Faktoren zu erhalten.
+
+In diesem Fall geht us um 4-Bit-Wörter, welche als Dualzahl interpretiert, miteinander multipliziert werden sollen. Dazu werden die 4-Bit-Wörter erst in zwei Hälften geteilt. Die Faktoren seien mit $A$ und $B$ gegeben.
+\begin{align*}
+	A &= 2^2 \cdot A_H + A_L \\
+	B &= 2^2 \cdot B_H + B_L \\	
+\end{align*}
+
+Das Produkt der Faktoren $A$ und $B$ kann demnach auch, wie folgt, berechnet werden:
+\begin{align}
+	P &= A \cdot B \\
+	  &= (2^2 \cdot A_H + A_L) \cdot (2^2 \cdot B_H + B_L) \\
+	  &= 2^4 \cdot A_H \cdot B_H + 2^2 \cdot A_H \cdot B_L + A_L \cdot 2^2 \cdot B_H + A_L \cdot B_L \\
+	  &= 2^4 \cdot A_H \cdot B_H + 2^2 \cdot (A_H \cdot B_L + A_L \cdot B_H) + A_L \cdot B_L \label{blockMultGleichung}
+\end{align}
+Berechnet werden müssen also lediglich die Produkte $A_H \cdot B_H$, $A_H \cdot B_L$, $A_L \cdot B_H$, $A_L \cdot B_L$. Die so berechneten Produkte werden anschließend entsprechend Bitversetzt summiert und das Ergebnis ist das Produkt $P$ der Ursprünglichen Faktoren $A$ und $B$.
+
+Die Gleichung \ref{blockMultGleichung} gibt Auskunft über die benötigten Operationseinheiten des Operationswerkes. Benötigt werden mindestens:
+\begin{itemize}
+  \item ein 2-Bit-Multiplizierer zur Berechnung der Teilprodukte
+  \item ein 8-Bit-Addierer zur Akkumulation der Teilergebnisse und
+  \item ein 2-Bit-Links-Shifter zur Berechnung der Multiplikation mit $2^2$.
+\end{itemize} 
+Abbildung \ref{blockMultOpWerk} zeigt das Schaltbild des Operationswerks des 4-Bit-Block-Multiplizierers.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{bit4blockMultiplizierer.pdf}
+	\caption{Operationswerk des 4-Bit-Blockmultiplizierers}
+	\label{blockMultOpWerk}
+\end{figure}
+
+Zur Ablaufsteuerung wird der prozedurale Ablauf aus Tabelle \ref{blkMulTab} festgelegt:
+
+\begin{table}[htp]
+\centering
+\begin{tabular}{c|l}
+\\
+Takt & Operation \\ \hline
+0  & $P \leftarrow A_H \cdot B_H$ \\
+1  & $P \leftarrow P << 2$ \\
+2  & $P \leftarrow P + (A_H \cdot B_L)$ \\
+3  & $P \leftarrow P + (A_L \cdot B_H)$ \\
+4  & $P \leftarrow P << 2$ \\
+5  & $P \leftarrow P + (A_L \cdot B_L)$ \\
+\\
+\\
+\end{tabular}
+\hspace{0.7cm}
+\begin{tabular}{ccc|cccc}
+\multicolumn{3}{c|}{Takt} & \multicolumn{4}{c}{Steuerung} \\
+$t_2$ & $t_1$ & $t_0$ & $s_0$ & $s_1$ & $s_2$ & $s_3$ \\ \hline
+0     & 0     & 0     & 0     & 0     & 0     & 0     \\
+0     & 0     & 1     & *     & *     & 1     & 1     \\
+0     & 1     & 0     & 0     & 1     & 1     & 0     \\
+0     & 1     & 1     & 1     & 0     & 1     & 0     \\
+1     & 0     & 0     & *     & *     & 1     & 1     \\
+1     & 0     & 1     & 1     & 1     & 1     & 0     \\
+1     & 1     & 0     & *     & *     & *     & *     \\
+1     & 1     & 1     & *     & *     & *     & *     \\
+\end{tabular}
+\caption{Operationen und Steuertabelle für den 4-Bit-Blockmultiplizierer}
+\label{blkMulTab}
+\end{table}
+
+Die Taktangabe wird mit einem Modulo 6 4-2-1-BCD-Zähler realisiert. Damit werden die Dualzahlen 000, 001, 010, 011, 100 und 101 in dieser Reihenfolge je Takt angegeben. Die Steuerfunktionen lassen sich aus der Tabelle generieren und anschließend mit KV-Diagrammen minimieren. Abbildung \ref{blkMulStrFkt} zeigt die KV-Diagramme zur Minimierung der Funktionen. Die minimierten Ansteuerfunktionen sind:
+\begin{align*}
+s_0 &= t_0 \\
+s_1 &= t_2 + \overline{t_0} t_1 \\
+s_2 &= t_0 + t_1 + t_2 \\
+s_3 &= t_0\hspace{2pt} \overline{t_1} \hspace{2pt} \overline{t_2}  + \overline{t_0} t_2 \\
+\end{align*}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{bit4BlockMultipliziererSteuerungsFunktionen.pdf}
+	\caption{KV-Diagramme zur Minimierung der Steuerfunktionen}
+	\label{blkMulStrFkt}
+\end{figure}
+
+Abbildung \ref{blkMulReal} zeigt das Schaltdiagramm des Schaltwerkes des 4-Bit-Blockmultiplizierers.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{bit4BlockMultipliziererSteuerwerk.pdf}
+	\caption{Schaltdiagramm des Schaltwerkes des 4-Bit-Blockmultiplizierers}
+	\label{blkMulReal}
+\end{figure}
+
+
+
+

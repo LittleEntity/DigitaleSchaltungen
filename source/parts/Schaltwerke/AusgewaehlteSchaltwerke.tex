@@ -1,0 +1,208 @@
+\chapter{Ausgewählte Schaltwerke}
+In folgenden Abschnitten wird besprochen, wie sich Speicherlemente zu Registern erweitwern lassen. Außerdem werden typische Zählerschaltungen vorgestellt.
+
+\section{Register}
+Register dienen der Speicherung von mehreren Bits. Man spricht hier von Wörtern bestehend aus einer Folge von Bits. Mit Hilfe von Spezialregistern können auch arithmetische und logische Operationen auf Bitwörtern durchgeführt werden.
+
+\subsection{Parallelregister}
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{ParallelRegisterStruktur.pdf}
+	\caption{Strukturdiagramm eines 4-Bit-Parallelregisters}
+	\label{Bit4ParRegStruk}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{ParallelRegisterSchaltsymbol.pdf}
+	\caption{Schaltsymbol eines 4-Bit-Parallelregisters}
+	\label{Bit4ParRegScha}
+\end{figure}
+Das Parallelregister ist von der Komplexität her das einfachste unter den Registertypen. Für jedes Bit, das gespeichert werden soll, wird hier ein D-FlipFlop verwendet. Die Anzahl an verwendeten D-FlipFlops gibt die Wortlänge der Wörter an, welche im Register gespeichert werden kann.
+In einem Parallelregister mit der Wortlängenkapazität von $n$-Bits sind $n$-viele D-FlipFlops parallel geschaltet und es existieren $n$-viele parallele Dateneingänge und $n$-viele parallele Datenausgänge. Abbildung \ref{Bit4ParRegStruk} zeigt das Strukturbild eines 4-Bit-Parallelregisters. Abbildung \ref{Bit4ParRegScha} zeigt das normierte Schaltbild des 4-Bit-Parallelregisters.
+
+
+\subsection{Schieberegister} 
+Ein Schieberegister wird im Gegensatz zum Parallelregister sequentiell Bit für Bit befüllt. Das Datenwort kann wiederum parallel über die Ausgänge der D-FlipFlops ausgelesen werden. Abbildung \ref{Bit4SchiebRegStruk} zeigt die Struktur eines 4-Bit-Schieberegisters. Der Ausgang jedes D-FlipFlops wird nach Außen zum Auslesen geführt und zusätzlich zum Eingang des darauffolgenden D-FlipFlops geführt um die Schiebeoperation zu realisieren. Abbildung \ref{Bit4SchiebRegScha} zeigt das Schaltsymbol eines 4-Bit-Schieberegisters.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=0.8\textwidth]{SchiebeRegisterStruktur.pdf}
+	\caption{Strukturdiagramm eines 4-Bit-Rechts-Schieberegisters}
+	\label{Bit4SchiebRegStruk}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{SchiebeRegisterSchaltsymbol.pdf}
+	\caption{Schaltsymbol eines 4-Bit-Rechts-Schieberegisters}
+	\label{Bit4SchiebRegScha}
+\end{figure}
+
+Das Schieberegister kann zur Parallelisierung eines seriellen Datenstroms genutzt werden. Dazu werden die Bits des Datenstroms Bit für Bit in das Register geschrieben und jedes mal, wenn das Register vollständig beschrieben wurde werden die gespeicherten Bits an die Ausgänge weitergeleitet. Sind $n$ parallele Eingänge und ein Ausgang gegeben ist somit auch eine serialisierung eines parallelen Datenstroms möglich.
+
+Außerdem können Schieberegister zur Manipulation der Bits verwendet werden um arithmetische und logische Bitschiebe-Operationen hardwaretechnisch umzusetzen. Ein Links-Schieben um $n$-Stellen, wobei die jweils niedrigste Stelle mit 0 aufgefüllt wird, bewirkt bei Interpretation der Bitfolge als Dualzahl eine $n$-fache Verdoppelung des Wertes. Dies ist selbstverständlich nur dann korrekt, wenn durch das Schieben nicht signifikante Bits verloren werden. Analog bewirkt ein Rechts-Schieben um $n$-Stellen eine $n$-fache Halbierung des Wertes. Exakt gilt dies natürlich wiederum nur dann, wenn die niederwertigste Stelle mit 0 belegt war. Ansonsten entspricht die Rechts-Schiebung immer der $n$-fachen Halbierung abgerundet. 
+
+Zusätzlich ist es möglich ein Ringschiebe-Register zu erstellen, indem der der Ausgang des letzten FlipFlops mit dem Eingang des ersten FlipFlops verbunden wird. Abbildung \ref{ringSchiebe} veranschaulicht die Konstruktion anhand des Schaltsymbols.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{RingSchiebeRegisterSchaltsymbol.pdf}
+	\caption{Schaltsymbol eines 4-Bit-Ringschiebe-Registers}
+	\label{ringSchiebe}
+\end{figure}
+
+Es kann auch ein Links-Rechts-Schiebe-Register realisiert werden indem die jeweilige Funktion mittels eines Steuersignals ausgewählt wird. Das Steuersignal wird von Multiplexern verarbeitet, die abhängig vom Steuersignal den Signalausgang des linken oder rechten Speicherelements zur Eingabe in das nachfolgende Speicherelement wählen. Ein Schaltdiagramm, welches ein solches Register realisiert ist in Abbildung \ref{lrSchiebeStruk} zu sehen. Abbildung \ref{lrSchiebeSym} zeigt das Schaltsymbol eines Links-Rechts-Schieberegisters.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=0.9\textwidth]{LinksRechtsSchiebeRegisterStruktur.pdf}
+	\caption{Strukturdiagramm eines 4-Bit-Links-Rechts-Schieberegisters}
+	\label{lrSchiebeStruk}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{LinksRechtsSchiebeRegisterSchaltsymbol.pdf}
+	\caption{Schaltsymbol eines 4-Bit-Links-Rechts-Schiebe-Registers}
+	\label{lrSchiebeSym}
+\end{figure}
+
+Je nachdem was mit dem Schieberegister realisiert werden soll müssen die Eingänge $d_r$ und $d_l$ unterschiedlich belegt werden. Soll eine arithmetische Linksschiebung erfolgen, was einer Multiplikation mit der entsprechenden Zweierpotenz gleich ist, müssen 0en am Eingang $d_l$ angelegt werden und das Steuersignal $s$ auf op-code Linksschieben gesetzt werden. Soll eine arithmetische Rechtsschiebung erfolgen, was einer Division mit der entsprechenden Zweierpotenz gleich ist, muss der Wert des Vorzeichen-Bits an $d_r$ angelegt und der das Steuersignal $s$ auf den op-code Rechtsschieben gesetzt werden. Handelt es sich um eine unsigned Zahlendarstellung muss natürlich entsprechend mit 0en in beiden Fällen aufgefüllt werden. 
+
+\section{Zählerschaltungen}
+Zählschaltungen zählen elektrische Impulse. Realisiert wird ein Zähler durch logische Vernetzung von FlipFlops. Die FlipFlops dienen der Speicherung des Zählerstandes um beim nächsten Signal weiter zählen zu können. Ein Zustand entspricht dabei einem Zahlensymbol. Es wird zwischen synchronen und asynchronen Zählern unterschieden. 
+
+\subsection{Synchrone Zähler}
+Bei synchronen Zählern liegt der Zählimpuls oder Takt an allen FlipFlops gleichzeitig an. Dadurch schalten alle FlipFlops gleichzeitig und die Ausgangsleitungen halten synchron den korrekten Wert. Bei den synchronen Zählern wird zwischen Taktgesteuerten und Signalgesteuerten Zählern unterschieden.
+
+Taktgesteuerte Zähler basieren auf den besprochenen Verfahren um Schaltwerke zu konstruieren. Jedes FlipFlop erhält das gleiche Taktsignal zur selben Zeit. Die Eingänge der FlipFlops werden anhand der Überführungsfunktion beschaltet. Der Zähler zählt dabei automatisch zu jedem Zeitpunkt und benötigt deshalb normalerweise keine weiteren zusätzlichen Eingabeparameter abgesehen vom momentanen Zustand.
+
+Als Beispiel sei hier ein 5-stelliger Johnson-Zähler gegeben. Der Zähler besitzt 10 Zählerstellungen, die in Abbildung \ref{JohnZae} im Grafen abgebildet sind. Tabelle \ref{JohnTab} zeigt die Zustandstabelle zum Johnson-Zähler.
+Aus der Tabelle lassen sich die Ansteuerfunktionen für die einzelnen FlipFlops direkt ablesen:
+\begin{align*}
+	J_4 = K_4 &= \overline{q_4} q_3 q_2 q_1 q_0 + q_4 \overline{q_3} \hspace{2pt} \overline{q_2} \hspace{2pt} \overline{q_1} \hspace{2pt} \overline{q_0} \\
+	J_3 = K_3 &= \overline{q_4} \hspace{2pt} \overline{q_3} q_2 q_1 q_0 + q_4 q_3 \overline{q_2} \hspace{2pt} \overline{q_1} \hspace{2pt} \overline{q_0} \\
+	J_2 = K_2 &= \overline{q_4} \hspace{2pt} \overline{q_3} \hspace{2pt} \overline{q_2} q_1 q_0 + q_4 q_3 q_2 \overline{q_1} \hspace{2pt} \overline{q_0}  \\
+	J_1 = K_1 &= \overline{q_4} \hspace{2pt} \overline{q_3} \hspace{2pt} \overline{q_2} \hspace{2pt} \overline{q_1} q_0 + q_4 q_3 q_2 q_1 \overline{q_0} \\
+	J_0	= K_0 &= \overline{q_4} \hspace{2pt} \overline{q_3} \hspace{2pt} \overline{q_2} \hspace{2pt} \overline{q_1} \hspace{2pt} \overline{q_0} + q_4 q_3 q_2 q_1 q_0 \\ 
+\end{align*}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=0.7]{JohnsonZaehlerGraf.pdf}
+	\caption{Graf des Johnson-Zählers}
+	\label{JohnZae}
+\end{figure}
+
+\begin{table}[htp]
+\centering
+\begin{tabular}{cc|*{5}{c}}
+$z^t$ & $z^{t+1}$ & \multicolumn{5}{|c}{FlipFlop-Vorbereitungseingänge}\\
+$q_4 q_3 q_2 q_1 q_0$ & $q_4 q_3 q_2 q_1 q_0$ & $J_4 K_4$ & $J_3 K_3$ & $J_2 K_2$ & $J_1 K_1$ & $J_0 K_0$\\ \hline
+00000 & 00001 & 0* & 0* & *0 & 0* & 1*\\
+00001 & 00011 & 0* & 0* & *0 & 1* & *0\\
+00011 & 00111 & 0* & 0* & 1* & *0 & *0\\
+00111 & 01111 & 0* & 1* & *0 & *0 & *0\\
+01111 & 11111 & 1* & *0 & *0 & *0 & *0\\
+11111 & 11110 & *0 & *0 & *0 & *0 & *1\\
+11110 & 11100 & *0 & *0 & *0 & *1 & 0*\\
+11100 & 11000 & *0 & *0 & *1 & 0* & 0*\\
+11000 & 10000 & *0 & *1 & *0 & 0* & 0*\\
+10000 & 00000 & *1 & 0* & *0 & 0* & 0*\\
+\end{tabular}
+\caption{Zustandstabelle des Johnson-Zählers}
+\label{JohnTab}
+\end{table}
+
+Bei genauerem Hinsehen fällt auf, dass die Spalten der JK-Belegung sich decken mit den Spalten der $q_i^t$ Belegung. Demnach können die Überführungsfunktionen auch ganz einfach folgendermaßen festgelegt werden:
+\begin{align*}
+	J_4 &= q_3 \\
+	K_4 &= \overline{q_3} \\
+	J_3 &= q_2 \\
+	K_3 &= \overline{q_2} \\
+	J_2 &= q_1 \\
+	K_2 &= \overline{q_1} \\
+	J_1 &= q_0 \\
+	K_1 &= \overline{q_0} \\
+	J_0 &= \overline{q_4} \\
+	K_0 &= q_4 \\
+\end{align*}
+
+Damit ergibt sich eine sehr anschauliche Implementierung wie in Abbildung \ref{JohnImpl} zu sehen.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{JohnsonImplementierung.pdf} 
+	\caption{Implementierung des Johnson-Zählers}
+	\label{JohnImpl}
+\end{figure}
+
+Bei signalgesteuerten Zählern wird das Taktsignal so manipuliert, dass das Taktsignal nur dann anliegt, wenn das FlipFlop kippen soll. Alle Signaleingänge werden so beschaltet, dass das FlipFlop kippt.
+%TODO Beispiel ergänzen
+
+\subsection{Asynchrone Zähler}
+Bei asynchronen Zählern werden die jeweiligen nachfolgenden FlipFlops, welche die höheren Stellen repräsentieren, von den Vorgänger jeweiligen Vorgänger-FlipFlops getaktet. Ein FlipFlop schält also immer dann um, wenn das VorgängerFlipFlop von 0 auf 1 umschält.
+
+Tabelle \ref{AsyZaehTab} zeigt die Synthesetabelle für einen 8-4-2-1-BCD-Zähler. Der Tabelle kann folgendes Taktschema entnommen werden:
+\begin{itemize}
+  \item das zweite FlipFlop wird vom $ \overline{q_0} $ Ausgang des ersten FlipFlops getaktet. 
+  \item das dritte FlipFlop wird vom $ \overline{q_1} $ Ausgang des ersten FlipFlops getaktet. 
+  \item das vierte FlipFlop wird vom $ \overline{q_2} $ Ausgang des dritten FlipFlops getaktet. 
+\end{itemize}
+Die Ansteuerfunktionen sind laut Synthesetabelle \ref{AsyZaehTab}:
+\begin{align*}
+	J_3 &= q_2q_1 \\
+	K_3 &= 1 \\
+	J_2 &= 1 \\
+	K_2 &= 1 \\
+	J_1 &= \overline{q_3} \\
+	K_1 &= 1 \\
+	J_0 &= 1 \\
+	K_0 &= 1 \\
+\end{align*}
+Abbildung \ref{AsyZaehScha} zeigt das Schaltdiagramm des 8-4-2-1-BCD-Zählers.
+
+\begin{table}[htp]
+\centering
+\begin{tabular}{cc|cccc}
+$z^t$ & $z^{t+1}$ & \multicolumn{4}{|c}{FlipFlop-Vorbereitungseingänge}\\
+$q_3q_2q_1q_0$ & $q_3q_2q_1q_0$ & $J_3K_3$ & $J_2K_2$ & $J_1K_1$ & $J_0K_0$\\ \hline
+0000 & 0001 & ** & ** & ** & 1*\\
+0001 & 0010 & 0* & ** & 1* & *1\\
+0010 & 0011 & ** & ** & ** & 1*\\
+0011 & 0100 & 0* & 1* & 1* & *1\\
+0100 & 0101 & ** & ** & ** & 1*\\
+0101 & 0110 & 0* & ** & 1* & *1\\
+0110 & 0111 & ** & ** & ** & 1*\\
+0111 & 1000 & 1* & 1* & 1* & *1\\
+1000 & 1001 & ** & ** & ** & 1*\\
+1001 & 0000 & *1 & ** & 0* & *1\\
+\end{tabular}
+\caption{Synthesetabelle für einen asynchronen 8-4-2-1-BCD-Zähler}
+\label{AsyZaehTab}
+\end{table}
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{asynchroner8421bcdZaehler.pdf}
+	\caption{Schaltdiagramm für einen asynchronen 8-4-2-1-BCD-Zähler}
+	\label{AsyZaehScha}
+\end{figure}
+
+\section{Speicher}
+In digitalen Rechenanlagen werden verschiedene arten von Speicher verwendet. Besonders geläufig sind wohl der Arbeitsspeicher\footnote{Arbeitsspeicher wird auch als Random Access Memory bezeichnet (RAM)} und der Stack. Hier wird weiterhin der Pufferspeicher, auch als Queue bezeichnet besprochen.
+
+Der Arbeitsspeicher besteht aus einem Speicher von $2^k$-vielen Bit-Wörtern, die mit $k$-vielen Adressleitungen angesprochen werden können. Jedes Speicherwort speichert dabei $n$-viele Bits. Insgesamt können also $2^k \cdot n$ viele Bits gespeichert werden.
+
+Der Pufferspeicher ist ein Speicher nach dem Prinzip "`First in First Out"', auch kurz "`FiFo"' genannt. Es wird zum Speichern immer an letzter Position ein Speicherwort angehängt und beim lesen immer das Speicherwort an erster Position gelesen. Somit wird immer das Speicherwort gelesen, welches als erstes in den Pufferspeicher gelegt wurde. Um dieses Verhalten zu realisieren wird ein Steuerwerk vor die Register geschalten. Das Steuerwerk gibt zusätzlich zwei Signale aus. Das eine Signal signalisiert, ob der Speicher voll ist. Das andere Signal signalisiert, ob der Speicher leer ist.
+%TODO: Abbildung einfügen
+
+Der Stack funktioniert nach dem "`Last in First Out"' oder kurz "`LiFo"' Prinzip. Das bedeutet, dass das zuletzt hinzugefügte Speicherwort auch das erste ist, welches wieder gelesen wird. Die Steuerung wird wiederum einem spezifischen Steuerwerk überlassen, welches wiederum Signale für voll und leer nach außen weitergibt.
+%TODO: Abbildung einfügen
+
+
+ 
+ 
+
+
+

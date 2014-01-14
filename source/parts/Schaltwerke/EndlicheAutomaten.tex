@@ -1,0 +1,176 @@
+\chapter{Endliche Automaten zur Schaltwerksmodellierung}
+Präziser werden zur Schaltwerksmodellierung Automaten der Automatenklasse der Transduktoren verwendet. Transduktoren wandeln eine Eingabesequenz in eine Ausgabesequenz um. Sie haben also eine Übersetzerfunktion. Jeder Transduktor besteht aus Eingabealphabet $X$, Ausgabealphabet $Y$, Ausgabefunktion $\delta$, Zustandsmenge $Z$, Zustandstransitionsfunktion $\lambda$, welche auch Überführungsfunktion genannt wird, und Startzustand $z_a$. Formal als 6-Tupel:
+$$
+	(X,Y,Z,\lambda,\delta,z_a)
+$$ 
+
+Es gibt verschiedene Arten von Transduktoren. In den folgenden Abschnitten werden die Mealy-, Moore- und der Medwedew Transduktoren beschrieben. Die Automaten unterscheiden sich ausschließlich in der Art der Ausgabefunktion. Die Übergangsfunktion ist stets eine Abbildung von einem Ausgangszustand und einem Eingabezeichen auf einen Folgezustand. Formal gilt mit dem Ausgangzustand $z^t$ zum Zeitpunkt $t$ und Eingabezeichen $x^{t+1}$ zum Zeitpunkt $t+1$ folgt der Folgezustand $z^{t+1}$:
+$$
+	\delta : (z^t, x^{t+1}) \mapsto z^{t+1}
+$$
+
+Schaltwerke können
+\begin{itemize}
+  \item grafisch mittels Zustandsgrafen
+  \item tabellarisch mittels Automatentabellen (kann aus Zustandsgraf abgelesen werden)
+  \item algebraisch mittels Überführungsfunktion und Ausgabefunktion (kann aus Automatentabelle generiert werden)
+  \item oder als Programm in einer Register-Transfer-Sprache
+\end{itemize}
+vollständig beschrieben werden.
+
+\section{Mealy Automat}
+Die dem Mealy-Automaten spezifische Ausgabefunktion ist zusammengesetzt aus aktuellem Zustand und folgendem Eingabesymbol. Formal gilt aus dem Ausgangszustand $z^t$ zum Zeitpunkt $t$ und Eingabezeichen $x^{t+1}$ zum Zeitpunkt $t+1$ folgt das Ausgabesymbol $y^{t+1}$:
+$$
+	\lambda_{mealy} : (z^t, x^{t+1}) \mapsto y^{t+1}
+$$
+
+Grafisch wird beim Mealy Automat an die Kanten von einem Zustand zum nächsten das entsprechende Eingabe- und entsprechende Ausgabesymbol notiert. Das Beispiel aus Abbildung \ref{mealyBsp1} zeigt den Grafen eines Binärzahl-zu-Graycode-Transduktors. Das Symbol vor dem "` / "' ist das Eingabesymbol und das Symbol nach dem "` / "' ist das entsprechende Ausgabesymbol.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{MealyBeispiel1.pdf}
+	\caption{Mealy Automat, welcher aus Binärzahlen Zahlen im Graycode erstellt}
+	\label{mealyBsp1}
+\end{figure}
+
+Tabellarisch kann der Mealy-Automat auf zwei Arten beschrieben werden.
+\begin{itemize}
+  \item erste Variante: jede Zeile steht für einen Zustand; die Spalten entsprechen den Eingabesymbolen
+
+  	\begin{tabular}{c|cc}
+			& \multicolumn{2}{|c}{$x \in \{0,1\}$}\\
+			$z^t$ & 0 & 1\\ \hline
+			$z_0$ & $z_3 / 0$ & $z_1 / 1$\\
+			$z_1$ & $z_4 / 1$ & $z_2 / 0$\\
+			$z_2$ & $z_0 / 1$ & $z_0 / 0$\\
+			$z_3$ & $z_4 / 0$ & $z_2 / 1$\\
+			$z_4$ & $z_0 / 0$ & $z_0 / 1$\\
+		\end{tabular}
+  
+  \item zweite Variante: jede Zeile steht für einen Zustand; die Spalten entsprechen den Eingangs- und Ausgabevariablen und dem Folgezustand
+  
+  \begin{tabular}{cccc}
+		$z^t$ & x & $z^{t+1}$ & y\\ \hline
+		$z_0$ & 0 & $z_3$ & 0\\
+		$z_0$ & 1 & $z_1$ & 1\\ \hline
+		$z_1$ & 0 & $z_4$ & 1\\ 
+		$z_1$ & 1 & $z_2$ & 0\\ \hline
+		$z_2$ & 0 & $z_0$ & 1\\ 
+		$z_2$ & 1 & $z_0$ & 0\\ \hline
+		$z_3$ & 0 & $z_4$ & 0\\ 
+		$z_3$ & 1 & $z_2$ & 1\\ \hline
+		$z_4$ & 0 & $z_0$ & 0\\
+		$z_4$ & 1 & $z_0$ & 1\\
+	\end{tabular}
+\end{itemize}
+
+\section{Moore Automat}
+Die Ausgabefunktion des Moore Automats ist ausschließlich von dem aktuellen Zustand abhängig. Formal gilt aus einem Zustand $z^t$ zum Zeitpunkt $t$ folgt das Ausgabesymbol $y^t$:
+$$
+	\lambda_{moore} : z^t \mapsto y^t
+$$
+
+Grafisch wird beim Moore Automat an die Kanten das entsprechende Eingabesymbol notiert. Die Bezeichnung der Zustände wird vor dem "` / "' in den Knoten, der dem entsprechenden Zustand entspricht geschrieben. Das Ausgabesymbol entsprechend jedes Zustandes wird nach dem "` / "' notiert. Das Beispiel aus Abbildung \ref{mooreBsp1} zeigt einen Moore Automaten, welcher die Funktionsweise eines D-FlipFlops abbildet.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{MooreBeispiel1.pdf}
+	\caption{Moore Automat, welcher ein D-FlipFlop repräsentiert}
+	\label{mooreBsp1}
+\end{figure}
+
+Die folgende Tabelle zeigt die tabellarische Darstellung des Automaten.
+
+\begin{center}
+%\centering
+% \label{mooreBsp1Tab}
+\begin{tabular}{c|cc}
+		& \multicolumn{2}{|c}{$x \in \{0,1\}$}\\
+		$z^t/y$ & 0 & 1\\ \hline
+		$z_0/0$ & $z_0$ & $z_1$\\
+		$z_1/1$ & $z_0$ & $z_1$\\
+\end{tabular}
+\end{center}
+
+\section{Medwedew Automat}
+Der Medwedew Automat kann als Vereinfachung des Moore-Automats betrachtet werden. Dabei sind die Ausgabesymbole gleich den Bezeichnern der Zustände. Formal gilt also
+$$
+	\lambda_{medwedew} : z^t \textnormal{ mit } z^t = y^t
+$$
+Abbildung \ref{medBsp1} zeigt zur Demonstration denselben Automaten aus Abbildung \ref{mooreBsp1} in Medwedew Darstellung.
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{MedBeispiel1.pdf}
+	\caption{Medwedew-Automat, welcher ein D-FlipFlop repräsentiert}
+	\label{medBsp1}
+\end{figure}
+
+Wegen dieser Vereinfachung ist in der realisierenden Schaltung eine Funktion weniger nötig. Ansonsten müsste nach Moore die Abbildung von Zuständen auf Ausgabewerte ebenfalls als Funktionsschaltung in das Realisierende Schaltwerk aufgenommen werden.
+
+\section{Zustandsreduzierung}
+Ziel ist es systematisch äquivalente Schaltwerke herzuleiten um sie auf bestimmte Aspekte hin zu optimieren. Äquivalente Schaltwerke zeichnen sich dadurch aus, dass bei allen Eingabesequenzen alle zugehörigen Ausgabesequenzen gleich sind.
+%TODO anderes Verfahren aus DgS-SW-2f.pdf Folie 6ff ergänzen
+Automaten können minimiert werden, indem stabile kompatible Zustände miteinander verschmolzen werden. Kompatible Zustände sind Zustände, die das gleiche Folgeverhalten aufweisen. Für zwei Kompatible Zustände gilt, dass sie bei gleicher Eingabe in denselben Folgezustand übergehen. Stabile Zustände werden an Schleifen erkannt. Führt ein Zustand mit einer bestimmten Eingabe $x$ in denselben Zustand wird er als stabil mit der Eingabe $x$ bezeichnet.
+
+Die Verschmelzung von Zuständen kann von einem Moore-Automaten zu einem Mealy-Automaten führen. In Abbildung \ref{AutoRedBsp} ist das Diagramm des Beispielautomaten angegeben, welcher im folgenden Abschnitt systematisch reduziert wird.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{AutomatenReduzierungBsp.pdf}
+	\caption{Moore-Automat welcher reduziert werden soll}
+	\label{AutoRedBsp}
+\end{figure}
+
+Die Tabelle \ref{TableRedBsp} beschreibt den Automaten aus Abbildung \ref{AutoRedBsp}. Stabile Zustände sind mit \fbox{} markiert. Nicht benutzte Zustands/Eingabesymbol-Kombinationen sind mit * gekennzeichnet. Diese sind somit mit allen anderen Kombinationen kompatibel, da sie nicht verwendet werden.
+
+\begin{table}[htp]
+\label{TableRedBsp}
+\centering
+\begin{tabular}{c|cccc|c}
+ & \multicolumn{4}{|c|}{$x_1x_0$}\\
+$z$ & 00 & 01 & 11 & 10 & $y$\\ \hline
+a & \fbox{a} & b & * & c & 0\\
+b & a & \fbox{b} & d & * & 0\\
+c & a & * & e & \fbox{c} & 0\\
+d & * & * & \fbox{d} & c & 0\\
+e & * & b & \fbox{e} & * & 1\\
+\end{tabular}
+\caption{Tabelle zum Automat aus Abbildung \ref{AutoRedBsp}}
+\end{table}
+
+Aus der Tabelle \ref{TableRedBsp} können die kompatiblen Zustände abgelesen werden. Dazu wird jede Zeile mit jeder Folgezeile auf Kompatibilität geprüft. a ist also in diesem Beispiel mit allen anderen Zuständen b, c, d und e kompatibel. Um eine Übersicht über alle kompatiblen Zustände zu erhalten wird das Kompatibilitätsdiagramm verwendet. Eine Verbindung von einem Zustand zu einem anderen existiert genau dann, wenn die beiden Zustände zueinander kompatibel sind. Abbildung \ref{KomRedBsp} zeigt das Kompatibilitätsdiagramm zum besprochenen Beispiel.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=1]{KompatibilitaetReduzierungBsp.pdf}
+	\caption{Kompatibilitätsdiagramm zur Tabelle \ref{TableRedBsp}}
+	\label{KomRedBsp}
+\end{figure}
+
+Mit Hilfe des Diagramms sind Gruppen von vollständig kompatiblen Zuständen ersichtlich. Zur Gruppenbildung dürfen nur bisher unberücksichtigte Zustände verwendet werden. Für das Beispiel gilt hier:
+\begin{align*}
+	a-c-e &\mapsto \{a,c,e\} \\
+	a-b-d &\mapsto \{b,d\} \\
+\end{align*}
+
+Aus den Gruppen ergeben sich in diesem Beispiel zwei neue Zustände:
+\begin{align*}
+	\{a,c,e\} &\mapsto a' \\
+	\{b,d\} &\mapsto b' \\
+\end{align*}
+
+Die Ausgabefunktion bei dieser Wahl der Zustände ist allerdings nicht mehr mit einem Moore-Automaten realisierbar, da die Ausgabefunktion zusätzlich von der Eingabebelegung abhängt. Der Automat wird deshalb in einen Mealy-Automaten überführt. Tabelle \ref{TableRedBspRed} zeigt die tabellarische Ansicht des Mealy-Automaten.
+\begin{table}[htp]
+\centering
+\begin{tabular}{c|cccc}
+ & \multicolumn{4}{|c}{$x_1x_0$}\\
+$z$ & 00 & 01 & 11 & 10\\ \hline
+a' & a'/0 & b'/0 & a'/1 & a'/0\\
+b' & a'/0 & b'/0 & b'/0 & a'/0\\
+\end{tabular}
+\caption{Reduzierte Automatentabelle}
+\label{TableRedBspRed}
+\end{table}
+
+
+
+  
+

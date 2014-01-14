@@ -1,0 +1,103 @@
+\chapter{Schaltwerksynthese}
+Wie aus einem Automaten ein Schaltwerk entsteht, wird in diesem Kapitel besprochen. Zunächst geht es um die Zustandscodierung, anschließend um die Generierung von der algebraischen Übergangs- und Ausgangsfunktionen und schließlich um die Hardwaresynthese.   
+
+\section{Zustandscodierung}
+Den Zuständen des zu realisierenden Automats werden Bitvektoren mit $k$ vielen Stellen zugewiesen. Jede Stelle eines Bitvektors wird durch ein Speicherelement realisiert. Als Speicherelemente können die in diesem Dokument vorgestellten JK- oder D-FlipFlops verwendet werden. Für $n$ verschiedene Zustände werden demnach $k = \lceil ld(n) \rceil$ viele Stellen benötigt.
+
+Durch geschickte Wahl der Stellencodierung können die Schaltnetzkosten reduziert und die Ansteuerfunktionen der Speicherelemente vereinfacht werden. Dabei um dies zu erreichen ist es oft sinnvoll, dass die Stellencodierung eine Zuordnung zum Schaltwerksverhalten erkennen lässt. 
+% Hierzu ein Beispiel:
+% \begin{align*}
+% Z &= (a,b,c) \\
+% Y &= (y) \\
+% \end{align*}
+% \begin{center}
+% \begin{tabular}{ccc}
+% \multicolumn{3}{c}{direkte Codierung:} \\
+% $z/y$   & $z_1z_0/y$ & $y$ \\
+% $a/0$ & $00/0$ & $y=$ \\
+% $b/0$ & $01/0$ & $y=$ \\
+% $c/1$ & $10/1$ & $y=$ \\
+% \end{tabular}
+% \end{center}
+% 
+% \center{versus}
+% 
+% \begin{center}
+% \begin{tabular}{ccc}
+% \multicolumn{3}{c}{Medwedew Codierung:} \\
+% $z/y$   & $z_1z_2/y$ & $y$ \\
+% $a/y_0$ & $01/y_0$   & $y_0=z_0\overline{z_1}$ \\
+% $b/y_1$ & $10/y_1$   & $y_1=\overline{z_0}z_1$ \\
+% $c/y_2$ & $11/y_2$   & $y_2=z_0z_1$ \\
+% \end{tabular}
+% \end{center}
+
+Als Beispiel für eine Zustandscodierung wird der Binärzahl zu Zahl im Graycode Wandler aus Abbildung \ref{mealyBsp1} verwendet. Der Automat hat 5 Zustände. Demnach müssen $k = \lceil ld(5) \rceil = 3$ viele Stellen codiert werden. Die Codierung ist im Diagramm aus Abbildung \ref{zusCod} gezeigt.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[scale=.9]{zustandsCodierungBsp.pdf}
+	\caption{Beispiel zur Zustandscodierung vom Automat aus Abbildung \ref{mealyBsp1}}
+	\label{zusCod}
+\end{figure}
+
+\section{Ansteuerfunktionen}
+Ansteuerfunktionen\footnote{Ansteuerfunktionen werden auch Überführungsfunktionen genannt.} sind Funktionen, welche die Eingabebelegung der Speicherbausteine eines Schaltwerks aus dem aktuellen Zustand und eventuellen Eingabedaten berechnen. Zur Generierung der Ansteuerfunktionen wird eine Zustandstabelle verwendet, welche alle codierten Zustände und die dazugehörigen Belegungen der Speicherbausteine enthält. Der erste Spaltenblock definiert den aktuellen Zustand. Der zweite Spaltenblock definiert die Eingabevariablen. Der dritte Spaltenblock definiert den Folgezustand. Der vierte Spaltenblock gibt die Belegung der Speicherbausteine an, womit der Zustand des ersten Spaltenblocks in den Zustand des dritten Spaltenblocks überführt werden kann. Der fünfte Spaltenblock gibt schließlich die Ausgabe je Zustands-Eingabe-Kombination an.
+
+Tabelle \ref{zusTab} gibt die Zustandstabelle für den Binär-Gray-Code-Wandler an.
+\begin{table}
+\centering
+\label{zusTab}
+\begin{tabular}{ccc|c|ccc|ccc|c}
+\multicolumn{3}{c|}{$z^t$}  & & \multicolumn{3}{c|}{$z^{t+1}$} & \multicolumn{3}{c|}{}\\
+$z_2$ & $z_1$ & $z_0$ & x & $z_2$ & $z_1$ & $z_0$ & $J_2K_2$ & $J_1K_1$ & $J_0K_0$ & $y^t$\\ \hline
+0 & 0 & 0 & 0 & 1 & 1 & 0 & 1 * & 1 * & 0 * & 0\\
+0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 * & 0 * & 1 * & 1\\
+0 & 0 & 1 & 0 & 1 & 0 & 0 & 1 * & 0 * & * 1 & 1\\
+0 & 0 & 1 & 1 & 1 & 0 & 1 & 1 * & 0 * & * 0 & 0\\
+0 & 1 & 0 & 0 & * & * & * & * * & * * & * * & *\\
+0 & 1 & 0 & 1 & * & * & * & * * & * * & * * & *\\
+0 & 1 & 1 & 0 & * & * & * & * * & * * & * * & *\\
+0 & 1 & 1 & 1 & * & * & * & * * & * * & * * & *\\
+1 & 0 & 0 & 0 & 0 & 0 & 0 & * 1 & 0 * & 0 * & 0\\
+1 & 0 & 0 & 1 & 0 & 0 & 0 & * 1 & 0 * & 0 * & 1\\
+1 & 0 & 1 & 0 & 0 & 0 & 0 & * 1 & 0 * & 0 * & 1\\
+1 & 0 & 1 & 1 & 0 & 0 & 0 & * 1 & 0 * & 0 * & 0\\
+1 & 1 & 0 & 0 & 1 & 0 & 0 & * 0 & * 1 & * 1 & 0\\
+1 & 1 & 0 & 1 & 1 & 0 & 1 & * 0 & * 1 & * 1 & 1\\
+1 & 1 & 1 & 0 & * & * & * & * * & * * & * * & *\\
+1 & 1 & 1 & 1 & * & * & * & * * & * * & * * & *\\
+\end{tabular}
+\caption{Zustandstabelle zum Automat aus Abbildung \ref{zusCod}}
+\end{table}
+
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=0.42\textwidth]{ansteuerFunktionenJ2.pdf}
+	\includegraphics[width=0.42\textwidth]{ansteuerFunktionenK2.pdf}
+	\includegraphics[width=0.42\textwidth]{ansteuerFunktionenJ1.pdf}
+	\includegraphics[width=0.42\textwidth]{ansteuerFunktionenK1.pdf}
+	\includegraphics[width=0.42\textwidth]{ansteuerFunktionenJ0.pdf}
+	\includegraphics[width=0.42\textwidth]{ansteuerFunktionenK0.pdf}
+	\caption{KV-Diagramme für die Ansteuerfunktionen aus Tabelle \ref{zusTab}}
+	\label{ansFunKv}
+\end{figure}
+
+In der Zustandstabelle \ref{zusTab} ist zu sehen, wie die JK-FlipFlops je Stelle beschaltet werden müssen um einen Zustandswechsel zu erzeugen. Beispielsweise in der ersten Zeile wechselt die Stelle $z_2^t=0$ bei Eingabe von $x=0$ auf $z_2^{t+1}=1$. Um diesen Wechsel zu erzeugen ist das $J_2K_2$-FlipFlop verantwortlich. Ein Wechsel von 0 auf 1 wird mit der Belegung $J_2=1$ und $K_2=*$ erreicht. Für die weiteren Stellen $z_1$ und $z_0$ sind die jeweiligen FlipFlops $J_1K_1$ und $J_0K_0$ zuständig.
+
+In diesem Fall hängt der Folgezustand $z^{t+1}$ vom vorhergehenden Zustand $z^t$ und der Eingabe $x$ ab. Daher müssen die Ansteuerfunktionen in Abhängigkeit des vorhergehenden Zustands $z^t$ und der Eingabe $x$ generiert werden. Es wird für jedes $J_i$ und $K_i$ eine Ansteuerfunktion angegeben. Abbildung \ref{ansFunKv} zeigt die KV-Diagramme, welche zur Minimierung der Ansteuerfunktionen verwendet werden. Die Ansteuerfunktionen sind:
+\begin{align*}
+	J_2 &= z_0 + \overline{x} \\
+	K_2 &= \overline{z_1} \\
+	J_1 &= \overline{x}\hspace{2pt}\overline{z_0}\hspace{2pt}\overline{z_2} \\
+	K_1 &= z_2 \\ 
+	J_0 &= x\hspace{2pt}\overline{z_2} \\
+	K_0 &= \overline{x} + z_2 \\ 
+\end{align*}
+
+
+{\sl Notiz:} da immer entweder J oder K "` * "' ist, können die Ansteuerfunktionen von J und K zu einer Funktion zusammengefasst werden. Die KV-Diagramme für J bzw. K können somit verschmolzen und daraus eine einzige Ansteuerfunktion für J und K gewonnen werden.
+ 
+%TODO Hazards und Races aus DgS-SW-2f.pdf Folie 19ff einfügen
+
