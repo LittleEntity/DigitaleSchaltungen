@@ -43,7 +43,7 @@ Nr. & RT-Operation\\\hline
 \end{tabular}
 \hspace{0.7cm}
 \begin{tabular}{c|cc|ccc}
-Z & $z_1$ & $Z_2$ & $s_0$ & $W\_E$ & $W\_AC$ \\ \hline
+Z & $z_1$ & $z_0$ & $s_0$ & $WE$ & $WAC$ \\ \hline
 1 & 0     & 0     & *     & 1      & 0       \\
 2 & 0     & 1     & 0     & 0      & 1       \\
 3 & 1     & 0     & *     & 1      & 0       \\
@@ -53,7 +53,7 @@ Z & $z_1$ & $Z_2$ & $s_0$ & $W\_E$ & $W\_AC$ \\ \hline
 \label{AkkuSteuerwerkSynthese}
 \end{table}
 
-In den folgenden Abschnitten wird mittels des Register Transfer Entwurfs ein 4-Bit Blockmultiplizierer Schritt für Schritt entwickelt. Ein Blockmultiplizierer teilt die Faktoren anhand ihrer Stellen in Blöcke auf und Multipliziert die Blöcke. Anschließend werden die Blöcke entsprechend um die jeweiligen Stellen verschoben und aufaddiert um das korrekte ergebnis der Multiplikation der ursprünglichen Faktoren zu erhalten.
+In den folgenden Abschnitten wird mittels des Register Transfer Entwurfs ein 4-Bit Blockmultiplizierer Schritt für Schritt entwickelt. Ein Blockmultiplizierer teilt die Faktoren anhand ihrer Stellen in Blöcke auf und Multipliziert die Blöcke. Anschließend werden die Blöcke entsprechend um die jeweiligen Stellen verschoben und aufaddiert um das korrekte Ergebnis der Multiplikation der ursprünglichen Faktoren zu erhalten.
 
 In diesem Fall geht us um 4-Bit-Wörter, welche als Dualzahl interpretiert, miteinander multipliziert werden sollen. Dazu werden die 4-Bit-Wörter erst in zwei Hälften geteilt. Die Faktoren seien mit $A$ und $B$ gegeben.
 \begin{align*}
