@@ -1,5 +1,5 @@
-Digitaltechnik
-==============
+Digitale Schaltungen
+====================
 
 Build-Instructions
 ------------------
