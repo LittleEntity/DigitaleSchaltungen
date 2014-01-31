@@ -17,5 +17,5 @@ Wenn ihr hier in GitHub ein Issue postet, kann auch jeder, der/die das selbe Pro
 Wenn ihr also eine allgemeine Frage habt, schreibt das bitte hier.
 
 PS: ich möchte an dieser Stelle klarstellen, 
-dass ich *keine* Werbung für irgendwelche Programme machen möchte. 
+dass ich *keine Werbung* für irgendwelche Programme machen möchte. 
 Diese Instruktionen dienen ausschließlich der Erläuterung zur Übersetzung der LaTeX- und Bilddateien mit einem TeX-System.
