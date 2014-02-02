@@ -4,10 +4,10 @@ Ein Schaltnetz ist eine technische Realisierung einer mathematischen Zuordnung, 
 Um die Gatteranzahl bei der Realisierung möglichst gering zu halten, können Schaltnetze minimiert werden. Die Minimierung kann durch Umformung der algebraischen Darstellung, mit Hilfe der KV-Diagramme, Reduktion eines BDDs oder mittels des Quine-McCluskey-Verfahrens erfolgen. BDDs und das Quine-McCluskey-Verfahren werden in diesem Kapitel besprochen. Die Grundlagen für Schaltfunktionen und die Beschreibungen zu KV-Diagrammen und SBTs sind im Dokument Digitaltechnik Aufbereitung zu finden. 
 
 \section{Binäre Entscheidungsdiagramme}
-Ein binäres Entscheidungsdiagramm ist die Darstellung einer logischen Funktion als Binärbaum. Einer Variablenbelegung entspricht dabei einem Pfad von der Wurzel zu den Blättern. Jedes Blatt repräsentiert einen Funktionswert zu einer bestimmten Variablenbelegung.
+Ein binäres Entscheidungsdiagramm ist die Darstellung einer logischen Funktion als Binärbaum. Einer Variablenbelegung entspricht dabei einem Pfad von der Wurzel zu den Blättern. Jedes Blatt repräsentiert einen Funktionswert zu einer bestimmten Variablenbelegung. Abbildung \ref{EntscheidungsdiagrammBsp} zeigt ein Beispiel für ein binäres Entscheidungsdiagramm.
 
-Beispiel:
-\begin{center}
+\begin{figure}[htp]
+\centering
 \begin{tikzpicture}
 	[minimum size=6mm,
 	 inner sep=1mm,
@@ -42,7 +42,9 @@ Beispiel:
   		edge from parent node [right, above] {$\overline{a}$}
   	};
 \end{tikzpicture}
-\end{center}
+\caption{Beispiel eines binären Entscheidungsdiagramms}
+\label{EntscheidungsdiagrammBsp}
+\end{figure}
 
 Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Löschen von irrelevanten Knoten reduziert werden. Zwei Teilbäume können miteinander verschmolzen werden, wenn sie gleich sind. Um die Übersicht zu behalten bietet es sich an möglichst große Teilbäume zu verschmelzen. Abbildung \ref{verschmelzung} zeigt dies anhand des oben angegebenen Beispiels.
 \begin{figure}[hp]
