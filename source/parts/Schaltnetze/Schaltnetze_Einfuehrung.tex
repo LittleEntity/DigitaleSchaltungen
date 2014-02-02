@@ -154,13 +154,13 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   		child { node (c2) [knoten] {$c$}
   			child { node (l3) [blatt] {1} edge from parent node [left] {$\overline{c}$} }
   			child { node (l4) [blatt] {0} edge from parent node [right] {$c$} }
-  			edge from parent node [right] {$b$} 
+  			edge from parent node [right] {$\overline{b}$} 
   		}
   		edge from parent node [right, above] {$\overline{a}$} % right, above could also be realized with xshift=10pt and yshift=10pt
   	};
   	
   	\draw (b1) to node [near start, above] {$b$} (c2);
-  	\draw (b2) to node [near start, above] {$\overline{b}$} (c1);
+  	\draw (b2) to node [near start, above] {$b$} (c1);
   	
   	\begin{pgfonlayer}{background}
   	\node [rectangle, fill=black!10!white, fit=(c2)(l3)(l4)] {};
@@ -189,13 +189,13 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   	child { node (b2) [knoten] {$b$}
   		child { node (c2) [knoten] {$c$}
   			child { node (l2) [blatt] {1} edge from parent node [right] {$\overline{c}$} }
-  			edge from parent node [right] {$b$} 
+  			edge from parent node [right] {$\overline{b}$}
   		}
   		edge from parent node [right, above] {$\overline{a}$} % right, above could also be realized with xshift=10pt and yshift=10pt
   	};
   	
   	\draw (b1) to node [near start, above] {$b$} (c2);
-  	\draw (b2) to node [near start, above] {$\overline{b}$} (c1);
+  	\draw (b2) to node [near start, above] {$b$} (c1);
   	
   	\draw (c1) to node [near start, above] {$c$} (l2);
   	\draw (c2) to node [near start, above] {$c$} (l1);
