@@ -46,11 +46,10 @@ Ein binäres Entscheidungsdiagramm ist die Darstellung einer logischen Funktion 
 \label{EntscheidungsdiagrammBsp}
 \end{figure}
 
-Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Löschen von irrelevanten Knoten reduziert werden. Zwei Teilbäume können miteinander verschmolzen werden, wenn sie gleich sind. Um die Übersicht zu behalten bietet es sich an möglichst große Teilbäume zu verschmelzen. Abbildung \ref{verschmelzung} zeigt dies anhand des oben angegebenen Beispiels.
+Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Löschen von irrelevanten Knoten reduziert werden. Zwei Teilbäume können miteinander verschmolzen werden, wenn sie gleich sind. Um die Übersicht zu behalten bietet es sich an möglichst große Teilbäume zu verschmelzen. Abbildung \ref{Verschmelzung} zeigt dies anhand des oben angegebenen Beispiels.
 \begin{figure}[hp]
-\label{verschmelzung}
+\label{Verschmelzung}
 \centering
-\caption{Reduktion eines Entscheidungsdiagramms mittels Verschmelzung}
 \begin{tikzpicture}
 	[minimum size=6mm,
 	 inner sep=1mm,
@@ -202,6 +201,7 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   	\draw (c1) to node [near start, above] {$c$} (l2);
   	\draw (c2) to node [near start, above] {$c$} (l1);
 \end{tikzpicture}
+\caption{Reduktion eines Entscheidungsdiagramms mittels Verschmelzung}
 \end{figure}
 
 Führen die beiden ausgehenden Kanten eines Knotens auf denselben Knoten oder dasselbe Blatt so kann der Knoten gelöscht werden und dessen eingehende Kanten auf das Kind des gelöschten Knotens verzweigt werden. 
