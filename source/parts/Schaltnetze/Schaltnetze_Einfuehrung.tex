@@ -26,7 +26,7 @@ Ein binäres Entscheidungsdiagramm ist die Darstellung einer logischen Funktion 
   			child { node (l4) [blatt] {0} edge from parent node [right] {$c$} }
   			edge from parent node [right] {$b$} 
   		}
-  		edge from parent node [left, above] {$a$}
+  		edge from parent node [left, above] {$\overline{a}$}
   	}
   	child { node (b2) [knoten] {$b$}
   		child { node (c3) [knoten] {$c$}
@@ -39,7 +39,7 @@ Ein binäres Entscheidungsdiagramm ist die Darstellung einer logischen Funktion 
   			child { node (l8) [blatt] {1} edge from parent node [right] {$c$} }
   			edge from parent node [right] {$b$} 
   		}
-  		edge from parent node [right, above] {$\overline{a}$}
+  		edge from parent node [right, above] {$a$}
   	};
 \end{tikzpicture}
 \caption{Beispiel eines binären Entscheidungsdiagramms}
@@ -67,7 +67,7 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   			child { node (l4) [blatt] {0} edge from parent node [right] {$c$} }
   			edge from parent node [right] {$b$} 
   		}
-  		edge from parent node [left, above] {$a$}
+  		edge from parent node [left, above] {$\overline{a}$}
   	}
   	child { node (b2) [knoten] {$b$}
   		child { node (c3) [knoten] {$c$}
@@ -80,7 +80,7 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   			child { node (l8) [blatt] {1} edge from parent node [right] {$c$} }
   			edge from parent node [right] {$b$} 
   		}
-  		edge from parent node [right, above] {$\overline{a}$} % right, above could also be realized with xshift=10pt and yshift=10pt
+  		edge from parent node [right, above] {$a$} % right, above could also be realized with xshift=10pt and yshift=10pt
   	};
   	
   \begin{pgfonlayer}{background}
@@ -106,7 +106,7 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   			child { node (l2) [blatt] {1} edge from parent node [right] {$c$} }
   			edge from parent node [left] {$\overline{b}$}
   		}
-  		edge from parent node [left, above] {$a$}
+  		edge from parent node [left, above] {$\overline{a}$}
   	}
   	child { node (b2) [knoten] {$b$}
   		child { node (c4) [knoten] {$c$}
@@ -114,7 +114,7 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   			child { node (l8) [blatt] {1} edge from parent node [right] {$c$} }
   			edge from parent node [right] {$b$} 
   		}
-  		edge from parent node [right, above] {$\overline{a}$} % right, above could also be realized with xshift=10pt and yshift=10pt
+  		edge from parent node [right, above] {$a$} % right, above could also be realized with xshift=10pt and yshift=10pt
   	};
   	
   	\node (c2) [knoten, below=of a] {$c$}
@@ -148,7 +148,7 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   			child { node (l2) [blatt] {1} edge from parent node [right] {$c$} }
   			edge from parent node [left] {$\overline{b}$}
   		}
-  		edge from parent node [left, above] {$a$}
+  		edge from parent node [left, above] {$\overline{a}$}
   	}
   	child { node (b2) [knoten] {$b$}
   		child { node (c2) [knoten] {$c$}
@@ -156,7 +156,7 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   			child { node (l4) [blatt] {0} edge from parent node [right] {$c$} }
   			edge from parent node [right] {$\overline{b}$} 
   		}
-  		edge from parent node [right, above] {$\overline{a}$} % right, above could also be realized with xshift=10pt and yshift=10pt
+  		edge from parent node [right, above] {$a$} % right, above could also be realized with xshift=10pt and yshift=10pt
   	};
   	
   	\draw (b1) to node [near start, above] {$b$} (c2);
@@ -184,14 +184,14 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
   			child { node (l1) [blatt] {0} edge from parent node [left] {$\overline{c}$} }
   			edge from parent node [left] {$\overline{b}$}
   		}
-  		edge from parent node [left, above] {$a$}
+  		edge from parent node [left, above] {$\overline{a}$}
   	}
   	child { node (b2) [knoten] {$b$}
   		child { node (c2) [knoten] {$c$}
   			child { node (l2) [blatt] {1} edge from parent node [right] {$\overline{c}$} }
   			edge from parent node [right] {$\overline{b}$}
   		}
-  		edge from parent node [right, above] {$\overline{a}$} % right, above could also be realized with xshift=10pt and yshift=10pt
+  		edge from parent node [right, above] {$a$} % right, above could also be realized with xshift=10pt and yshift=10pt
   	};
   	
   	\draw (b1) to node [near start, above] {$b$} (c2);
