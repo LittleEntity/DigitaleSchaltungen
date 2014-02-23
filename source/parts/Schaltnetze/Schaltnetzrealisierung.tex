@@ -1,7 +1,7 @@
  %\input{../praeambel} \begin{document}
 
 \chapter{Schaltnetzrealisierung}
-Schaltnetze können systematisch über ein Binary Decision Diagram oder einer Schaltfunktion umgesetzt werden. 
+Schaltnetze können systematisch mittels BDDs oder Schaltfunktionen definiert werden. 
 %TODO SN-Realisierung mit Schaltdiagrammen ausführen 
 {\sc nand} bzw. {\sc nor} Schaltkreise sind dabei physikalisch günstiger, da weniger Transistoren, Leistung und geringere Schaltzeiten benötigt werden. Näheres zu {\sc nand}/{\sc nor} Funktionen ist im Dokument Digitaltechnik Aufbereitung zu finden. 
 
@@ -15,14 +15,11 @@ y &= a \cdot b + \overline{c} \cdot d \\
   \textnormal{ \# Gesetz von De Morgan führt zu {\sc nand}} \\
   &= \overline{\overline{\overline{\overline{a \cdot b} \cdot \overline{\overline{c} \cdot d}}}} 
   	\textnormal{ \# Doppelte Negation für {\sc nor} Realisierung} \\ 
-  &= \overline{\overline{\overline{a \cdot b} + \overline{\overline{c} \cdot d}}} \\
-  &= \overline{\overline{\overline{a \cdot b} + \overline{\overline{c} \cdot d}}} \\
-  &= \overline{\overline{(\overline{a} + \overline{b}) + (c + \overline{d})}} \textnormal{ \# {\sc nor} Realisierung}\\
-  &= \overline{\overline{\overline{\overline{(\overline{a} + \overline{b})}} 
-  	+ \overline{\overline{(c + \overline{d})}}}} \\
+  &= \overline{\overline{\overline{\overline{a \cdot b}} + \overline{\overline{\overline{c} \cdot d}}}} \\
+  &= \overline{\overline{\overline{\overline{a} + b} + \overline{c + \overline{d}}}} \textnormal{ \# {\sc nor} Realisierung}\\
 \end{align*}
 
-Ausgehend von einer Disjunktiven Form\footnote{Näheres zu Disjunktiven Formen kann im Dokument Digitaltechnik Aufarbeitung nachgeschlagen werden.} kann also über die Doppelte Negation zu einer {\sc nand} Funktion umgebaut werden. Es gilt mit den Mintermenen $m_i$:
+Ausgehend von der Disjunktiven Form\footnote{Näheres zu Disjunktiven Formen kann im Dokument Digitaltechnik Aufarbeitung nachgeschlagen werden.} einer Funktion, kann also die From über die Doppelte Negation zu einer {\sc nand} Form umgebaut werden. Es gilt mit den Mintermenen $m_i$:
 
 \begin{align*}
 	y &= m_1 + m_2 + \ldots + m_n = \sum_{i=1}^n m_i \\
@@ -30,6 +27,7 @@ Ausgehend von einer Disjunktiven Form\footnote{Näheres zu Disjunktiven Formen k
 	  &= \overline{\overline{m_1} \cdot \overline{m_2} \cdot \overline{(\ldots)} \cdot \overline{m_n}} 
 	   = \overline{\prod_{i=1}^n \overline{m_i}} \\
 \end{align*}
+
 Als allgemeine Methode um von einer Disjunktiven Form zu einer {\sc nand} Form umzuformen kann angegeben werden:
 \begin{enumerate}
   \item erhalte Aussage mittels doppelter Negation
@@ -126,7 +124,7 @@ H & H & H & 1 & 1 & 1 & 0 & 0 & 0 \\
 Aufgrund dieser Zusammenhänge wird die positive Logik auch {\sl wired {\sc and}} und die negative Logik auch {\sl wired {\sc or}} genannt.  
   
 \section{Multiplexer}  
-Mit Multiplexern kann von mehreren Eingängen einer geziehlt per Addressierung ausgewählt werden. Diese Funktion kommt beispielsweise in Bus-Systemen zum Einsatz. Je nachdem wieviele Werte addressiert werden sollen, müssen entsprechend viele Variablen als Adressvariablen gewählt werden. Jede Adressvariable steht dabei für eine Stelle einer Adresse. 
+Mit Multiplexern kann von mehreren Eingängen einer geziehlt per Addressierung ausgewählt werden. Diese Funktion kommt beispielsweise in Bus-Systemen zum Einsatz. Je nachdem wieviele Werte addressiert werden sollen, müssen entsprechend viele Variablen als Adressvariablen gewählt werden. Jede Adressvariable steht dabei für eine Binärstelle einer Adresse. 
 
 Ein 2 zu 1 Multiplexer hat demnach zwei Eingänge, die es zu addressieren gilt. Demnach muss eine zusätzliche Eingangsvariable als Addressvariable zur Darstellung der Addressen 0 und 1 ergänzt werden. Abbildung \ref{2zu1MuxReal} zeigt die Realisierung eines 2 zu 1 Multiplexers. Hat $a$ den Wert 0 so wird der Wert $x_0$ an y übertragen. Hat $a$ den Wert 1 wird der Wert von $x_1$ ausgewählt und an $y$ übertragen.
 \begin{figure}[htp]
@@ -144,7 +142,7 @@ Um die Beschreibung von Multiplexern zu vereinfachen kann die Notation aus Abbil
 	\label{MulNot}
 \end{figure}
 
-Nach demselben Schema lassen sich $n$ zu 1 Multiplexer aufbauen. Wobei $n$ die Anzahl addressierbarer Elemente ist. Praktisch angewandt kann dies Beispielsweise für eine Register zu Bus Verbindung genutzt werden. Wenn der Wert eines Registers einem Bus übergeben werden soll geschieht folgendes: In die Adressvariablen wird die Adresse des Registers geschrieben. Damit wird im Multiplexer das entsprechende Register ausgewählt. Die Ausgangsvariable erhält somit den Wert des Registers. Abbildung \ref{4zu1MuxReal} zeigt das Schaltbild eines 4 zu 1 Multiplexers.
+Nach demselben Schema lassen sich $n$ zu 1 Multiplexer aufbauen. Wobei $n$ die Anzahl addressierbarer Elemente ist. Praktisch angewandt kann dies Beispielsweise für eine Register zu Bus Verbindung genutzt werden. Wenn der Wert eines Registers einem Bus übergeben werden soll geschieht folgendes: In den Adressvektor wird die Adresse des Registers geschrieben. Damit wird im Multiplexer das entsprechende Register ausgewählt. Der Ausgangsvektor erhält somit den Wert des Registers. Abbildung \ref{4zu1MuxReal} zeigt das Schaltbild eines 4 zu 1 Multiplexers.
 
 \begin{figure}[htp]
 	\centering
@@ -178,7 +176,7 @@ $$ y = \overline{a}\overline{b}\overline{c} + \overline{a}b\overline{c} + \overl
 	\label{FunMuxBsp}
 \end{figure}
 
-Bei der Realiserung von Funktionen als Multiplexer können die Addressvariablen zur Minimierung des Multiplexers dienen. Dazu werden die Werte des Multiplexers abhängig von den Eingangsvariablen gesetzt. Mit diesem Verfahren kann die Funktion aus \ref{FunMuxBsp} mit dem Multiplexer aus Abbildung \ref{minMuxFunBsp} realisiert werden.
+Bei der Realiserung von Funktionen als Multiplexer können die Addressvariablen zur Minimierung des Multiplexers dienen. Dazu werden die Werte des Multiplexers abhängig von den Eingangsvariablen gesetzt. Mit diesem Verfahren kann die Funktion aus \ref{FunMuxBsp} mit dem Multiplexer aus Abbildung \ref{minMuxFunBsp} realisiert werden. Grundsätzlich ist es möglich den Multiplexer in Abhängigkeit einer beliebigen Eingangsvariablen zu schalten um so die Anzahl der Eingänge des Multiplexers zu reduzieren. 
 
 \begin{figure}[htp]
 	\centering
@@ -201,12 +199,12 @@ Bei der Realiserung von Funktionen als Multiplexer können die Addressvariablen 
 	\includegraphics{4zu1minMuxFunBsp.pdf}
 	\caption{Minimierter Multiplexer}
 	\label{minMuxFunBsp}
-\end{figure} 
+\end{figure}
 
 %TODO Abschnitt "Demultiplexer" aus DgS-SN-2f ergänzen 
 
 \section{{\sc Rom, Prom}-Realisierung einer Schaltfunktion}
-{\sc Rom} steht für Read Only Memory. {\sc Prom} steht entsprechend für Programmable Read Only Memory. Es handelt sich um unversell einsetzbare addressierende Einheiten zur Realisierung von Schaltnetzen. Jeder Addresse wird hierbei ein Speicherwort als Festwert bzw. Konstante zugeordnet. So können allen Variablenbelegungen einer Funktion der entsprechende Wert als Speicherwort im {\sc rom} zugeordnet werden. Dies ist Verleichbar mit dem nicht minimierten Verfahren zur Realisierung einer Funktion mit einem Multiplexer.
+{\sc Rom} steht für Read Only Memory. {\sc Prom} steht entsprechend für Programmable Read Only Memory. Es handelt sich um unversell einsetzbare addressierende Einheiten zur Realisierung von Schaltnetzen. Jeder Addresse wird hierbei ein Speicherwort als Festwert bzw. Konstante zugeordnet. So können allen Variablenbelegungen einer Funktion der entsprechende Wert als Speicherwort im {\sc rom} zugeordnet werden. Dies ist vergleichbar mit dem Verfahren zur Realisierung einer Funktion mit einem Multiplexer.
 
 Beispiel: Es sei folgende Funktion gegeben:
 $$f(x_0, x_1, x_2, x_3) = y = \prod \{M_0, M_2, M_3, M_4, M_5, M_8, M_{12}, M_{13}\}$$ %führt zu Anzeigefehler?
@@ -220,7 +218,8 @@ Die Funktion soll mit einem {\sc prom} realisiert werden. Es werden also vier Ad
 \end{figure}
 
 \section{{\sc Pla}-Realisierungen}
-{\sc Pla} steht für Programmable Logic Array. In einem PLA liegen alle Eingangsvariablen sowohl als solche als auch negiert vor. Die Variablenbelegungen können im Konjunktionsfeld des {\sc pla}s beliebig konjunktiv verknüpft werden. So entstehen rein konjunktiv verknüpfte Terme, welche als Minterme einer Funktion dienen können. Im Disjunktionsfeld des {\sc pla}s können die Minterme aus dem Konjunktionsfeld disjunktiv verknüpft werden. Die Verknüpfung der Variablen und Terme kann im Baustein programmiert werden. So kann jede Schaltfunktion in disjunktiver Form realisiert werden.
+{\sc Pla} steht für Programmable Logic Array. In einem \textsc{pla} liegen alle Eingangsvariablen sowohl als solche als auch negiert vor. Die Variablenbelegungen können im Konjunktionsfeld des {\sc pla}s beliebig konjunktiv verknüpft werden. So entstehen rein konjunktiv verknüpfte Terme, welche als Minterme einer Funktion dienen können. Im Disjunktionsfeld des {\sc pla}s werden die Minterme aus dem Konjunktionsfeld disjunktiv verknüpft. So kann jede Schaltfunktion in disjunktiver Form realisiert werden.
+
 Da jede Variable mit jeder anderen Variablen einen Minterm bilden kann, werden genauso viele Konjunktionsbausteine benötigt, wie Eingangsvariablen vorhanden sind. Es können beliebig viele Disjunktionsbausteine im Disjunktionsfeld gewählt werden um beliebig viele Funktionen mit den im Konjunktionsfeld erstellten Mintermen zu realisieren. Abbildung \ref{PLAschem} zeigt das Schema eines {\sc pla}-Bausteins.  
 \begin{figure}[htp]
 	\centering
