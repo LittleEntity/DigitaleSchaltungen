@@ -1,5 +1,5 @@
 \chapter{Einführung}
-Ein Schaltnetz ist eine technische Realisierung einer mathematischen Zuordnung, Abbidlung oder Funktion über einem binären Grundraum. Schaltnetze können mittels einer algebraischen boolschen Funktion, einer Schaltbelegungstabelle\footnote{'Schaltbelegungstabelle' kurz 'SBT'}, Karnaugh-Veitch Diagrammen oder mittels binären Entscheidungsdiagrammen \footnote{'Binäres Entscheidungsdiagramm' engl. 'binary decision diagram' kurz 'BDD'} dargestellt werden.
+Ein Schaltnetz ist eine technische Realisierung einer mathematischen Zuordnung, Abbildung oder Funktion über einem binären Grundraum. Schaltnetze können mittels einer algebraischen boolschen Funktion, einer Schaltbelegungstabelle\footnote{'Schaltbelegungstabelle' kurz 'SBT'}, Karnaugh-Veitch Diagrammen oder mittels binären Entscheidungsdiagrammen\footnote{'Binäres Entscheidungsdiagramm' engl. 'binary decision diagram' kurz 'BDD'} dargestellt werden.
 
 Um die Gatteranzahl bei der Realisierung möglichst gering zu halten, können Schaltnetze minimiert werden. Die Minimierung kann durch Umformung der algebraischen Darstellung, mit Hilfe der KV-Diagramme, Reduktion eines BDDs oder mittels des Quine-McCluskey-Verfahrens erfolgen. BDDs und das Quine-McCluskey-Verfahren werden in diesem Kapitel besprochen. Die Grundlagen für Schaltfunktionen und die Beschreibungen zu KV-Diagrammen und SBTs sind im Dokument Digitaltechnik Aufbereitung zu finden. 
 
@@ -204,8 +204,8 @@ Der Entscheidungsbaum kann durch Verschmelzen gleicher Teilbäume und durch Lös
 \label{Verschmelzung}
 \end{figure}
 
-Führen die beiden ausgehenden Kanten eines Knotens auf denselben Knoten oder dasselbe Blatt so kann der Knoten gelöscht werden und dessen eingehende Kanten auf das Kind des gelöschten Knotens verzweigt werden. 
-\begin{figure}[hp]
+Führen die beiden ausgehenden Kanten eines Knotens auf denselben Knoten oder dasselbe Blatt so kann der Knoten gelöscht werden und dessen eingehende Kanten auf das Kind des gelöschten Knotens verzweigt werden (vgl. Abbildung \ref{knotenLoeschn}). 
+\begin{figure}[htp]
 \centering
 \begin{tikzpicture}[graph, bend angle=45]
 	\node[] (a) {}
@@ -238,16 +238,17 @@ Führen die beiden ausgehenden Kanten eines Knotens auf denselben Knoten oder da
 	\draw[->, ultra thick, color=black!35] (c2) to (c1');
 \end{tikzpicture}
 \caption{Löschen eines Knotens}
+\label{knotenLoeschn}
 \end{figure}
 
 \section{Quine-McCluskey-Verfahren}
-Nach dem Quine-McCluskey-Verfahren können systematisch Terme zusammengefasst werden, welche sich durch Negation einer einzigen Variablen unterscheiden. Das Quine-McCluskey-Verfahren eignet sich im Gegensatz zu KV-Diagrammen für Funktionen mit beliebig vielen Eingangsvariablen. Außerdem ist es leicht zu automatisieren. Beim händischen Minimieren von Funktionen sollten für Funktionen mit 4 oder weniger Eingangsvariablen KV-Diagramme verwendet werden, da diese übersichtlicher und für uns Menschen leichter zu lösen sind. Für Funktionen mit mehr als 4 Eingangsvariablen sollte das Quine-McCluskey-Verfahren eingesetzt werden.
+Nach dem Quine-McCluskey-Verfahren können systematisch Terme zusammengefasst werden, welche sich durch Negation einer einzigen Variablen unterscheiden. Das Quine-McCluskey-Verfahren eignet sich im Gegensatz zu KV-Diagrammen für Funktionen mit beliebig vielen Eingangsvariablen. Außerdem ist es leicht zu automatisieren. Beim manuellen Minimieren von Funktionen sollten für Funktionen mit 4 oder weniger Eingangsvariablen KV-Diagramme verwendet werden, da diese übersichtlicher und für uns Menschen leichter zu lösen sind. Für Funktionen mit mehr als 4 Eingangsvariablen sollte das Quine-McCluskey-Verfahren eingesetzt werden.
 
 Die Vereinfachung geschieht mittels Ordnungstabellen, welche schrittweise reduziert werden. 
 \begin{enumerate}
-  \item Die Minterme der Funktion werden aufgrund der Anzahl affirmierter\footnote{Die Affirmation ist das Gegenteil der Negation. Eine affirmierte Variable ist also eine Variable als solche.} Variablen zusammengefasst. So entstehen Gruppen von Termen, wobei alle Terme einer jeweiligen Gruppe gleich viele affirmierte Variablen besitzen. Die so entstandene Ordnung lässt sich in einer Ordnungstabelle notieren, wobei die Gruppen nach Anzahl der affirmierten Variablen aufsteigend sortiert werden.
-  \item Anschließend werden jeweils zwei Gruppen zusammengefasst, welche in der Sortierung direkt nebeneinander stehen. Eine Zusammenfassung zweier Terme wird vollzogen, wenn die Terme sich in ausschließlich einer Stelle durch Affirmation und Negation derselben Stelle unterscheiden. Die zusammengefassten Terme werden wiederum neuen Gruppen zugeordnet und in einer Ordnungstabelle nach gleichem Schema notiert. So entstehen Tabellen höherer Ordnung bis keine weitere Zusammenfassung möglich ist.
-  \item Terme, welche nicht weiter zusammengefasst werden konnten werden aufgrund dieser Eigenschaft Primimplikanten genannt. Für die minimierte Funktion sind allerdings nicht zwingend alle Primimplikanten notwendig. Primimplikanten, welche für die Funktion notwendig sind, werden Kernimplikanten genannt. Die Kernimplikanten werden anhand der Primimplikantentafel bestimmt. Dabei muss jeder Minterm von mindestens einem Kernimplikanten abgedeckt sein. Es gilt also eine minimale Anzahl an Kernimplikanten zu bestimmen, wobei jeder Minterm über die Menge der ausgewählten Kernimplikanten abgedeckt sein muss.
+  \item Die Minterme der Funktion werden aufgrund der Anzahl affirmierter\footnote{Die Affirmation ist das Gegenteil der Negation. Eine affirmierte Variable ist also eine nicht negierte Variable, also die Variable als solche.} Variablen zusammengefasst. So entstehen Gruppen von Termen, wobei alle Terme einer jeweiligen Gruppe gleich viele affirmierte Variablen besitzen. Die so entstandene Ordnung lässt sich in einer Ordnungstabelle notieren, wobei die Gruppen nach Anzahl der affirmierten Variablen aufsteigend sortiert werden.
+  \item Anschließend werden jeweils zwei Gruppen zusammengefasst, welche in der Sortierung direkt nebeneinander stehen. Eine Zusammenfassung zweier Terme wird vollzogen, wenn die Terme sich an ausschließlich einer Stelle durch Affirmation und Negation derselben Stelle unterscheiden. Die zusammengefassten Terme werden wiederum neuen Gruppen zugeordnet und in einer Ordnungstabelle nach gleichem Schema notiert. So entstehen Tabellen höherer Ordnung bis keine weitere Zusammenfassung möglich ist.
+  \item Terme, welche nicht weiter zusammengefasst werden konnten, werden aufgrund dieser Eigenschaft Primimplikanten genannt. Für die minimierte Funktion sind allerdings nicht zwingend alle Primimplikanten notwendig. Primimplikanten, welche für die Funktion notwendig sind, werden Kernimplikanten genannt. Die Kernimplikanten werden anhand der Primimplikantentafel bestimmt. Dabei muss jeder Minterm von mindestens einem Kernimplikanten abgedeckt sein. Für eine minimierte Funktion muss also eine minimale Anzahl von Kernimplikanten bestimmt werden. Dabei muss jeder Minterm über die Menge der ausgewählten Kernimplikanten abgedeckt werden.
 \end{enumerate}
 
 Beispiel: Die Funktion f mit den vier Eingangsvariablen $a$, $b$, $c$ und $d$ sei durch ihre Minterme $\{m_i \mid i \in {0,2,5,8,10,12,13,15}\}$ eindeutig bestimmt.
@@ -309,13 +310,22 @@ die Primimplikantentafel ist also:
   $0,2,8,10$    & + \# & + \# & ~    & + \# & + \# & ~  & ~    & ~    & $K_3$ \\
 \end{tabular}
 \end{center}
+
+Legende:
+
+\begin{tabular}{rl}
++ & Implikant deckt entsprechenden Minterm ab \\
+\# & dient der Bestimmung der Kernimplikanten \\
+* & Minterm wird durch einen bereits bestimmten Kernimplikant abgedeckt \\
+\end{tabular}
+
 Die Minterme $m_0$, $m_5$, $m_8$, $m_{10}$, $m_{13}$ und $m_{15}$ werden über die Terme $K_1$, $K_2$ und $K_3$ abgedeckt. Wie an der Tafel zu erkennen ist, kann der Minterm $m_{12}$ von $P_1$ oder $P_2$ abgedeckt werden. Daher muss einer der beiden Terme als Kernimplikant gewählt werden. Es gibt also zwei mögliche minimierte Formen der Funktion:
 \begin{align*}
 	f(a,b,c,d) &= \overline{a}\overline{b}\overline{c}\overline{d} + \overline{a}b\overline{c}\overline{d} 
 	              + a\overline{b}c\overline{d} + \overline{a}\overline{b}\overline{c}d + \overline{a}b\overline{c}d 
 	              + \overline{a}\overline{b}cd + a\overline{b}cd + abcd \\
-	           &= \overline{a}\overline{b}d + a\overline{b}c + acd + \overline{b}\hspace{2pt}\overline{d} \\
-	           &= \overline{b}cd + a\overline{b}c + acd + \overline{b}\hspace{2pt}\overline{d} \\
+	           &= P_1 + K_1 + K_2 + K_3 = \overline{a}\overline{b}d + a\overline{b}c + acd + \overline{b}\hspace{2pt}\overline{d} \\
+	           &= P_2 + K_1 + K_2 + K_3 = \overline{b}cd + a\overline{b}c + acd + \overline{b}\hspace{2pt}\overline{d} \\
 \end{align*}
 
 
