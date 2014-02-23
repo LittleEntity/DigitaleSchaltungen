@@ -1,7 +1,7 @@
 \chapter{Laufzeitverhalten und Hazardanalyse}
-Jeder Zustand, den eine Schaltfunktion einnehmen kann, ist fest definiert. Aus rein logischer Sicht wird einer Variablenbelegung genau ein Ergebniszustand zugeordnet. Aus praktisch physikalischer Betrachtung braucht jedes Signal Zeit um von einer Schaltung verarbeitet zu werden. Vor allem ein Pegelwechsel von High zu Low und von Low zu High verbraucht Laufzeit. Die Signallaufzeit insgesamt ist abhängig von der Art der Gatter, die das Signal verarbeiten, die Anzahl der Stufen, die das Signal durchlaufen muss und abhängig von der Beschaffenheit der Leitungen in Art und Länge. 
+Jeder Zustand, den eine Schaltfunktion einnehmen kann, ist fest definiert. Aus rein logischer Sicht wird einer Variablenbelegung genau ein Ergebniszustand zugeordnet. Von der praktisch physikalischen Betrachtung her braucht jedes Signal Zeit um von einer Schaltung verarbeitet zu werden. Vor allem ein Pegelwechsel von High zu Low und von Low zu High verbraucht Laufzeit. Die Signallaufzeit ist abhängig von der Art der Gatter, die das Signal verarbeiten, die Anzahl der Stufen, die das Signal durchlaufen muss und abhängig von der Beschaffenheit der Leitungen in Art und Länge. 
 
-Je nach Eingangssignal können die Laufzeiten unterschiedlich sein. So können Fehlimpulse entstehen, die am Ausgang der Schaltfunktion kurzzeitig zu falschen Ergebnissen führen. Solche Fehler werden Hazardfehler genannt. Im Folgenden wird die Hazardanalyse anhand der Beispielschaltfunkion aus Abbildung \ref{SchaltHazBsp1} erläutert.
+Je nach Eingangssignal können die Laufzeiten unterschiedlich sein. So können Fehlimpulse entstehen, die am Ausgang des Schaltnetzes weitergeleteitet werden. Solche Fehler werden Hazardfehler genannt. Im Folgenden wird die Hazardanalyse anhand der Beispielschaltfunkion aus Abbildung \ref{SchaltHazBsp1} erläutert.
 
 \begin{figure}[htp]
 	\centering
