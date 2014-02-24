@@ -25,14 +25,14 @@ In Abbildung \ref{SchaltHazBsp1_phys} wird jedem Gatter und jeder Leitung eine A
 	\label{SchaltHazBsp1_phys}
 \end{figure}
 
-So ergibt sich für die Laufzeiten der Pfade:
+So ergibt sich für die Laufzeiten\footnote{$\tau$ ist der griechische Buchstabe "`tau"'.} der Pfade:
 \begin{align*}
 	\tau_{a_1} &= \tau_1 + \tau_4 + \tau_5 + \tau_6 + \tau_7 \\
 	\tau_{b_1} &= \tau_2 + \tau_4 + \tau_5 + \tau_6 + \tau_7 \\
 	\tau_{c_1} &= \tau_3 + \tau_6 + \tau_7 \\
 \end{align*}
 
-Jeder Pfad wirkt sich auf den Funktionswert aus. Da jeder Pfad eine unterschiedliche Laufzeit haben kann, können so Hazardfehler entstehen. Die Pfadfunktion\footnote{die Pfadfunktion wird auch transient switching function genannt} $f$ wird aus der logischen Funktion $y$ in Abhängigkeit der Pfade abgeleitet. Die Trennung zwischen Logikfunktion, Logikvariablen und Pfadfunktion, Pfadvariablen wird Totzeitmodell genannt.
+Jeder Pfad wirkt sich auf den Funktionswert aus. Da jeder Pfad eine unterschiedliche Laufzeit haben kann, können so Hazardfehler entstehen. Die Pfadfunktion\footnote{die Pfadfunktion wird auch transient switching function genannt} $f$ wird aus der logischen Funktion $y$ in Abhängigkeit der Pfade abgeleitet. Die Trennung zwischen Logikfunktion mit Logikvariablen und Pfadfunktion mit Pfadvariablen wird Totzeitmodell genannt.
 \begin{align*}
 	\textnormal{Logikvariablen: } X &= (a, b, c) \\
 	\textnormal{Pfadvariablen: } P &= (a_1, b_1, c_1) \\
@@ -53,7 +53,7 @@ In der Beispielfunktion kann ein Hazardfehler beim Übergang der Variablenbelegu
 
 Eine mögliche Zustandsänderung ist eine Abfolge von Zwischenzuständen vom Anfangszustand zum Endzustand. Für die Folge gilt, dass von jedem Zustand zum Nächsten sich die Variablenbelegung genau einer Variablen ändert. Außerdem gilt für die Folge insgesamt, dass jede Variable sich maximal einmal ändert. 
 
-Um die möglichen Zustandsübergänge leichter zu erkennen, wird das {\sc kv}-Diagramm verwendet. Um die Bedingungen aus dem vorherigen Absatz einzuhalten, werden alle kürzesten Pfade von Anfangs zu Endzustand betrachtet. In Abbildung \ref{KvHazDiag1} ist der Anfangs- und Endzustand markiert. Die Pfeile zeigen die möglichen Zustandsübergänge. Alle Zustandsübergänge, die durch grüne Pfeile gekennzeichnet sind, enthalten keinen Hazard. Der Zustandsübergang, der durch die Abfolge roter Pfeile gekennzeichnet ist, enthält einen Hazard. Das Ausgangssignal würde bei diesem Zustandsübergang von 0 auf 1 auf 0 auf 1 wechseln.
+Um die möglichen Zustandsübergänge leichter zu erkennen, wird das {\sc kv}-Diagramm verwendet. Um die Bedingungen aus dem vorherigen Absatz einzuhalten, werden alle kürzesten Pfade von Anfangs zu Endzustand betrachtet. In Abbildung \ref{KvHazDiag1} ist der Anfangszustand $P_a$ und Endzustand $P_e$ markiert. Die Pfeile zeigen die möglichen Zustandsübergänge. Alle Zustandsübergänge, die durch grüne Pfeile gekennzeichnet sind, enthalten keinen Hazard. Der Zustandsübergang, der durch die Abfolge roter Pfeile gekennzeichnet ist, enthält einen Hazard. Das Ausgangssignal würde bei diesem Zustandsübergang von 0 auf 1 auf 0 auf 1 wechseln.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[scale=1]{KvHazardDiagnose1.pdf}
@@ -78,11 +78,11 @@ Hazards werden anhand ihrer Eigenschaften klassifiziert. Je nach dem wie sich ei
   \item dynamischer 0-1-Hazard: $f(P_a) = 1$ und $f(P_e) = 0$; beim Übergang von $P_a$ zu $P_e$ ist kurzfristig $f = 0$ und anschließend $f = 1$
   \item dynamischer 1-0-Hazard: $f(P_a) = 0$ und $f(P_e) = 1$; beim Übergang von $P_a$ zu $P_e$ ist kurzfristig $f = 1$ und anschließend $f = 0$
 \end{itemize}
-In diesem Beispiel aus Abbildung \ref{KvHazDiag1} handelt es sich also um einen dynamischen 1-0-Hazard.
+In dem Beispiel aus Abbildung \ref{KvHazDiag1} handelt es sich also um einen dynamischen 1-0-Hazard.
 
-Zusätzlich wird zwischen strukturellen und funktionalen Hazardfehlern unterschieden. Grundsätzlich kann ein struktureller Hazardfehler\footnote{siehe Abschnitt \ref{struktHazBeh} zur Behebung von strukturellen Hazardfehlern} behoben werden. Ein Funktionshazard kann dagegen niemals behoben werden.
+Zusätzlich wird zwischen strukturellen und funktionalen Hazardfehlern unterschieden. Grundsätzlich kann ein struktureller Hazardfehler\footnote{siehe Abschnitt \ref{struktHazBeh} zur Behebung von strukturellen Hazardfehlern} behoben werden. Ein Funktionshazard kann dagegen niemals algebraisch behoben werden.
 
-Um zu entscheiden, ob es sich um einen Funktionshazard oder einen Strukturhazard handelt, wird die Logikfunktion untersucht. Eine hazardfreie Struktur kann immer angegeben werden, wenn im {\sc kv}-Diagramm der Logikfunktion ein Pfad gefunden werden kann, welcher alle 1en überdeckt. Der Pfad kann mehrere Ausläufer haben. 
+Um zu entscheiden, ob es sich um einen Funktionshazard oder einen Strukturhazard handelt, wird die Logikfunktion untersucht. Eine hazardfreie Struktur kann immer angegeben werden, wenn im {\sc kv}-Diagramm der Logikfunktion ein Pfad gefunden werden kann, welcher alle 1en überdeckt. Der Pfad darf sich verzweigen. 
 
 Wenn ein solcher Pfad gefunden werden kann, handelt es sich um einen Strukturhazard. Existiert kein solcher Pfad, handelt es sich um einen Funktionshazard. Abbildung \ref{KvHazDiag2} zeigt einen solchen Pfad im {\sc kv}-Diagramm für die Beispielfunktion. In diesem Fall handelt es sich also um einen strukturellen, dynamischen 1-0-Hazard.
 \begin{figure}[htp]
@@ -146,24 +146,24 @@ Abbildung \ref{1HazZeitDiag} zeigt den 1-Hazardfehler im Zeitdiagramm. Kurz nach
 	\label{1HazZeitDiag}
 \end{figure}
 
-Abbildung \ref{01HazZeitDiag} zeigt den 01-Hazardfehler im Zeitdiagramm. Kurz nachdem die Belegung der Variablen $x$ geändert wird, sinkt kurzfristig der Wert der Funktion auf 0, steigt anschließen auf 1 und fällt wieder auf 0. 0 ist dabei der korrekte Wert der Funktion im Endzustand.
+Abbildung \ref{01HazZeitDiag} zeigt den 0-1-Hazardfehler im Zeitdiagramm. Kurz nachdem die Belegung der Variablen $x$ geändert wird, sinkt kurzfristig der Wert der Funktion auf 0, steigt anschließen auf 1 und fällt wieder auf 0. 0 ist dabei der korrekte Wert der Funktion im Endzustand.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[scale=1]{01HazardFehlerZeitdiagramm.pdf}
-	\caption{01-Hazardfehler im Zeitdiagramm}
+	\caption{0-1-Hazardfehler im Zeitdiagramm}
 	\label{01HazZeitDiag}
 \end{figure}
 
-Abbildung \ref{10HazZeitDiag} zeigt den 10-Hazardfehler im Zeitdiagramm. Kurz nachdem die Belegung der Variablen $x$ geändert wird, steigt kurzfristig der Wert der Funktion auf 1, sinkt anschließen auf 0 und steigt wieder auf 1. 1 ist dabei der korrekte Wert der Funktion im Endzustand.
+Abbildung \ref{10HazZeitDiag} zeigt den 1-0-Hazardfehler im Zeitdiagramm. Kurz nachdem die Belegung der Variablen $x$ geändert wird, steigt kurzfristig der Wert der Funktion auf 1, sinkt anschließen auf 0 und steigt wieder auf 1. 1 ist dabei der korrekte Wert der Funktion im Endzustand.
 \begin{figure}[htp]
 	\centering
 	\includegraphics[scale=1]{10HazardFehlerZeitdiagramm.pdf}
-	\caption{10-Hazardfehler im Zeitdiagramm}
+	\caption{1-0-Hazardfehler im Zeitdiagramm}
 	\label{10HazZeitDiag}
 \end{figure}
 
 \section{Hazardanalyse mit Restfunktion}
-In diesem Abschnitt wird anhand eines weiteren Beispiels besprochen, wie die Hazardanalyse auch nur mit dem betroffenen Teil der Funktion durchgeführt werden kann. Dies beschleunigt und vereinfacht den Analysevorgang.
+In diesem Abschnitt wird anhand eines weiteren Beispiels besprochen, wie die Hazardanalyse ausschließlich mit dem betroffenen Teil der Funktion durchgeführt werden kann. Dies beschleunigt und vereinfacht den Analysevorgang.
 
 Als Beispiel sei das Schaltdiagramm aus Abbildung \ref{HazSchaltBsp2} gegeben. Die Schaltung realisert die Logikfunktion: 
 $$y = \overline{a}\hspace{2pt}\overline{c}  + bc$$
@@ -192,17 +192,18 @@ u_x &= c \\
 \end{align*}
 Es ändert sich bei der Logikfunktion nur eine Variable, wie am Übergangsbereich festzustellen ist. Wenn sich lediglich die Belegung einer Variablen ändert, kann es keinen Hazard geben. Es handelt sich also nicht um einen Funktionshazard.
 
-Der Vollständigkeit wegen wird hier die Restfunktion der Logikfunktion $y_{Rest}$ für diesen Übergang betrachtet. Für die Restfunktion werden die konstanten Belegungen aus dem Übergangsbereich für die entsprechenden Variablen eingesetzt. Daraus ergibt sich die Restfunktion einer Funktion. Auch hier ist zu erkennen, dass es sich um keinen Funktionshazard handeln kann, da die Restfunktion lediglich aus einer Konstanten besteht.
+Der Vollständigkeit wegen wird hier die Restfunktion der Logikfunktion $y_{Rest}$ für diesen Übergang betrachtet. Für die Restfunktion werden die konstanten Belegungen aus dem Übergangsbereich für die entsprechenden Variablen eingesetzt. Daraus ergibt sich die Restfunktion einer Funktion. Auch hier ist zu erkennen, dass es sich um keinen Funktionshazard handeln kann, da die Restfunktion konstant 1 ist.
 \begin{align*}
 y_{Rest} &= y(a=0,b=1,c) \\ 
          &= \overline{0} \cdot \overline{c} + 1 \cdot c \\ 
+         &= \overline{c} + c \\ 
          &= 1 \\
 \end{align*}
 
 Als nächstes muss die Pfadfunktion geprüft werden. Die Pfadfunktion ergibt sich aus der Logikfunktion wie folgt:
 $$f(P) = \overline{a_1}\hspace{2pt}\overline{c_1}  + b_1c_2$$
 
-Anschließend werden Angangs- und Endzustand, Übergangsbereich $B_P$ und Übergangsterm $u_P$ für die Pfadfunktion dokumentiert.
+Anschließend werden Anfangs- und Endzustand, Übergangsbereich $B_P$ und Übergangsterm $u_P$ für die Pfadfunktion dokumentiert.
 \begin{align*}
 P   &= (a_1,b_1,c_1, c_2) \\
 X_a &= (0,1,1,1) \\
